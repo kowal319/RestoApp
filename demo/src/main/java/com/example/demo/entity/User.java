@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -33,7 +34,7 @@ public class User {
     private String phone;
 
     @Column(nullable = false)
-    private Date birth;
+    private LocalDate birth;
 
 
 }
