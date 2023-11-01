@@ -24,13 +24,6 @@ public class UserController {
     public List<User> findAllUsers() {
         return userService.findAllUsers();
     }
-
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
-    }
-
-
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.findById(id);

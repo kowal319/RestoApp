@@ -1,32 +1,26 @@
 package com.example.demo.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table( name = "orders")
-public class Order {
-
+@Table(name = "role")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "resto_id")
-    private Restaurant restaurant;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-
+    @Column(nullable = false, unique = true)
+    private String name;
 
 }
