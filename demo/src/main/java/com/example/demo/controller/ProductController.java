@@ -25,7 +25,7 @@ public class ProductController {
     public String viewAllProducts(Model model) {
         List<Product> products = productService.findAllProducts();
         model.addAttribute("products", products);
-        return "products";
+        return "product/products";
     }
 
     @PostMapping("/save")
@@ -37,7 +37,7 @@ public class ProductController {
     @GetMapping("/addProduct")
     public String showAddProductPage(Model model) {
         model.addAttribute("product", new Product());
-        return "add-product";
+        return "product/add-product";
     }
 
     @GetMapping("/{id}")
@@ -56,22 +56,13 @@ public class ProductController {
         return "redirect:/products";
 }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updateProduct) {
-        Product updatedEntity = productService.updateProduct(id, updateProduct);
-        if (updatedEntity != null) {
-            return ResponseEntity.ok(updatedEntity);
-        } else {
-            return ResponseEntity.notFound().build();
 
-        }
-    }
 
     @GetMapping("/editProduct/{id}")
     public String editProductForm(@PathVariable Long id, Model model) {
         Product product = productService.findById(id);
         model.addAttribute("product", product);
-        return "edit-product"; // Create an "edit-product.html" template
+        return "product/edit-product"; // Create an "edit-product.html" template
     }
 
     @PostMapping("/editProduct/{id}")

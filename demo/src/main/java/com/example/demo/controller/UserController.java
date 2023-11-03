@@ -24,12 +24,23 @@ public class UserController {
 
 
     @GetMapping
-    public String showAllUsers(Model model){
+    public String showAllUsers(Model model) {
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
-        return "users";
-
+        return "user/users";
     }
+
+        @PostMapping("/save")
+          public String createUser(@ModelAttribute("user") User user){
+            userService.createUser(user);
+            return "redirect:/users";
+        }
+
+        @GetMapping("/addUser")
+        public String showAddUserPage(Model model){
+        model.addAttribute("user", new User());
+        return "user/add-user";
+        }
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.findById(id);
@@ -40,27 +51,26 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        String result = userService.deleteUser(id);
-        return ResponseEntity.ok(result);
+    @GetMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+        return "redirect:/users";
     }
 
-//@GetMapping("/{id}")
-//public String deleteUserConfirmation(@PathVariable("id") Long id) {
-//    userService.deleteUser(id);
-//    return "redirect:/users";
-//}
+@GetMapping("editUser/{id}")
+    public String editUserForm(@PathVariable Long id, Model model){
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "user/edit-user";
+}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updateUser) {
-        User updatedEntity = userService.updateUser(id, updateUser);
-        if (updatedEntity != null) {
-            return ResponseEntity.ok(updatedEntity);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+@PostMapping("/editUser/{id}")
+    public String editProduct(@PathVariable Long id, @ModelAttribute User updatedUser){
+        userService.updateUser(id, updatedUser);
+        return "redirect:/users";
+}
+
+
 }
 
 
