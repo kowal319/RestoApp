@@ -11,12 +11,13 @@ public interface UserService {
 
     User findById(Long id);
 
+    User createUser(User user);
+
     //    User createUser(User user);
     String deleteUser(Long id);
 
     User updateUser(Long id, User updateUser);
 
     User findByEmail(String email);
-
-    void saveUser(RegistrationDto registrationDto);
+//    void saveUser(RegistrationDto registrationDto);
 }

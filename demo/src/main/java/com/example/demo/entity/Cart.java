@@ -20,8 +20,8 @@ public class Cart {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "customer_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
