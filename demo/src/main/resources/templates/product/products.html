@@ -6,8 +6,25 @@
 
 </head>
 <body>
+
+<header>
+    <span class="title"> MyShop</span>
+    <a href="" class="cart-ico">
+        <div>
+            <span>Koszyk (</span>
+            <span th:text="${@cart.counter}"></span> <!-- Use @cart to access the CartComponent bean -->
+            <span>)</span>
+            <span th:text="${@cart.sum}"></span>
+            <span>zl</span>
+        </div>
+    </a>
+</header>
+
+
 <h1>Product List</h1>
-<a th:href="@{/products/addProduct}" class="btn btn-primary">Add Product</a>
+<a th:href="@{/products/newProduct}" class="btn btn-primary">Add Product</a>
+<a th:href="@{/cart/${cart.id}}">View Cart</a>
+
 
 <table>
     <thead>
@@ -25,12 +42,12 @@
         <td th:text="${product.description}"></td>
         <td th:text="${product.price}"></td>
         <td>
-            <a th:href="@{/addToCart/{productId}(productId=${product.id})}">
-                Add to Cart
-            </a>
+
         <td>
+        <a th:href="@{/products/addProduct/{productId}(productId=${product.id})}" class="add-btn">Dodaj</a>
         <a th:href="@{products/editProduct/{id}(id=${product.id})}" class="btn btn-primary">Edit</a>
         <a th:href="@{products/deleteProduct/{id}(id=${product.id})}" class="btn btn-danger">Delete</a>
+
     </td>
 
     </tr>
