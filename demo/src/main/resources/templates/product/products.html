@@ -9,7 +9,7 @@
 
 <header>
     <span class="title"> MyShop</span>
-    <a href="" class="cart-ico">
+    <a th:href="@{/order/cart}" class="cart-ico">
         <div>
             <span>Koszyk (</span>
             <span th:text="${@cart.counter}"></span> <!-- Use @cart to access the CartComponent bean -->
@@ -23,7 +23,6 @@
 
 <h1>Product List</h1>
 <a th:href="@{/products/newProduct}" class="btn btn-primary">Add Product</a>
-<a th:href="@{/cart/${cart.id}}">View Cart</a>
 
 
 <table>

@@ -19,6 +19,7 @@ public class ProductController {
     private final ProductService productService;
     private final Cart cart;
 
+
     @Autowired
     public ProductController(ProductService productService, Cart cart) {
         this.productService = productService;
@@ -74,10 +75,6 @@ public class ProductController {
         productService.updateProduct(id, updatedProduct);
         return "redirect:/products"; // Redirect to the product list page after editing.
     }
-
-
-
-
 
     @GetMapping("/addProduct/{productId}")
     public String addItemToCart(@PathVariable("productId") Long itemId, Model model){
