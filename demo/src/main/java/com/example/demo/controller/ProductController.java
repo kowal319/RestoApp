@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.Cart;
 import com.example.demo.entity.Product;
+import com.example.demo.service.CartService;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
@@ -19,11 +19,14 @@ public class ProductController {
     private final ProductService productService;
     private final Cart cart;
 
+    private final CartService cartService;
+
 
     @Autowired
-    public ProductController(ProductService productService, Cart cart) {
+    public ProductController(ProductService productService, Cart cart, CartService cartService) {
         this.productService = productService;
         this.cart = cart;
+        this.cartService = cartService;
     }
 
     @GetMapping()
@@ -77,11 +80,9 @@ public class ProductController {
     }
 
     @GetMapping("/addProduct/{productId}")
-    public String addItemToCart(@PathVariable("productId") Long itemId, Model model){
-        Product product = productService.findById(itemId);
-            cart.addProduct(product);
-        System.out.println("Cart Contents: " + cart.getCartItems());
-        model.addAttribute("products", productService.findAllProducts());
+    public String addItemToCart(@PathVariable("productId") Long productId, Model model){
+        cartService.addItemToCart(productId);
+        model.addAttribute("products", cartService.getAllProducts());
         return "product/products";
     }
 

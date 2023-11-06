@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -21,10 +22,16 @@ public class OrderController {
         return "cartView";
     }
 
-    @GetMapping("/add/{productId}")
-    public String addItemToCart(@PathVariable("productId") Long productId){
+    @GetMapping("/increase/{productId}")
+    public String increaseProduct(@PathVariable("productId") Long productId){
     cartService.addItemToCart(productId);
     return "cartView";
+    }
+
+    @GetMapping("/decrease/{productId}")
+    public String decreaseProduct(@PathVariable("productId") Long productId){
+        cartService.decreaseItem(productId);
+        return "cartView";
     }
 
 }
