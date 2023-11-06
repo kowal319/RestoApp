@@ -32,13 +32,16 @@ public class Cart {
         recalculatePriceAndCounter();
     }
 
-    public void removeProduct(Product product) {
+    public void descreaseProduct(Product product) {
         Optional<CartItem> oCartItem = getCartItemByItem(product);
         if (oCartItem.isPresent()) {
             CartItem cartItem = oCartItem.get();
             cartItem.decreaseCounter();
             if (cartItem.hasZeroProduct()) {
-                cartItems.removeIf(i -> i.isEqual(product));
+                removeAllProductsFromCart(product);
+            }else {
+                recalculatePriceAndCounter();
+
             }
         }
         recalculatePriceAndCounter();
@@ -51,10 +54,14 @@ public class Cart {
                 .reduce(0, (a,b) -> a + b );
     }
 
-
     private Optional<CartItem> getCartItemByItem(Product product){
         return cartItems.stream()
                 .filter(i -> i.isEqual(product))
                 .findFirst();
+    }
+
+    public void removeAllProductsFromCart(Product product){
+        cartItems.removeIf(i -> i.isEqual(product));
+        recalculatePriceAndCounter();
     }
 }

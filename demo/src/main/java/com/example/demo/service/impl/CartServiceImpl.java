@@ -34,7 +34,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void decreaseItem(Long productId) {
         Product product = productService.findById(productId);
-        cart.removeProduct(product);
+        cart.descreaseProduct(product);
     }
 
     @Override
@@ -42,6 +42,10 @@ public class CartServiceImpl implements CartService {
         return productRepository.findAll();
     }
 
+    @Override
+    public void removeProduct(Long productId){
+        Product product = productService.findById(productId);
+        cart.removeAllProductsFromCart(product);
+    }
+    }
 
-
-}

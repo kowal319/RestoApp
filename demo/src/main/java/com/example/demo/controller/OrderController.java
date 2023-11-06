@@ -34,4 +34,12 @@ public class OrderController {
         return "cartView";
     }
 
+    @GetMapping("/remove/{productId}")
+    public String removeProductFromCart(@PathVariable("productId") Long productId){
+    cartService.removeProduct(productId);
+    return "cartView";
+    }
+
+
+
 }

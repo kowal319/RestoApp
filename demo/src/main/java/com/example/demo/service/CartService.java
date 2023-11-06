@@ -10,4 +10,6 @@ public interface CartService {
     void decreaseItem(Long productId);
 
     List<Product> getAllProducts();
+
+    void removeProduct(Long productId);
 }
