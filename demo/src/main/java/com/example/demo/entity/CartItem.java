@@ -34,8 +34,13 @@ public class CartItem {
         }
     }
 
-
     public boolean hasZeroProduct() {
         return counter == 0;
+    }
+
+    public void recalculate(){ price = product.getPrice() * counter;}
+
+    public boolean isEqual(Product product){
+        return this.product.getId().equals(product.getId());
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -23,44 +24,37 @@ public class Cart {
 
 
     public void addProduct(Product product) {
-        boolean notFound = true;
 
-        for (CartItem ci : cartItems) {
-            if (ci.getProduct().getId().equals(product.getId())) {
-                notFound = false;
-                ci.increaseCounter();
-                recalculatePriceAndCounter();
-                break;
-            }
-        }
-        if (notFound) {
-            cartItems.add(new CartItem(product));
-            recalculatePriceAndCounter();
-
-        }
+        getCartItemByItem(product).ifPresentOrElse(
+                CartItem::increaseCounter,
+                () -> cartItems.add(new CartItem(product))
+        );
+        recalculatePriceAndCounter();
     }
 
     public void removeProduct(Product product) {
-        for (CartItem ci : cartItems) {
-            if (ci.getProduct().getId().equals(product.getId())) {
-                ci.decreaseCounter();
-                if (ci.hasZeroProduct()) {
-                    cartItems.remove(ci);
-                }
-                recalculatePriceAndCounter();
-                break;
+        Optional<CartItem> oCartItem = getCartItemByItem(product);
+        if (oCartItem.isPresent()) {
+            CartItem cartItem = oCartItem.get();
+            cartItem.decreaseCounter();
+            if (cartItem.hasZeroProduct()) {
+                cartItems.removeIf(i -> i.isEqual(product));
             }
         }
+        recalculatePriceAndCounter();
     }
 
     private void recalculatePriceAndCounter(){
-        int tempCounter = 0;
-        double tempPrice = 0;
-        for(CartItem ci : cartItems){
-            tempCounter += ci.getCounter();
-            tempPrice = tempPrice + ci.getPrice();
-        }
-        this.counter = tempCounter;
-        this.sum = tempPrice;
+        sum = cartItems.stream().map(CartItem::getPrice)
+                .reduce((double) 0, Double::sum);
+        counter = cartItems.stream().mapToInt(CartItem::getCounter)
+                .reduce(0, (a,b) -> a + b );
+    }
+
+
+    private Optional<CartItem> getCartItemByItem(Product product){
+        return cartItems.stream()
+                .filter(i -> i.isEqual(product))
+                .findFirst();
     }
 }
