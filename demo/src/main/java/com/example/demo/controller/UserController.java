@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
+import com.example.demo.repository.OrderRepository;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,12 @@ public class UserController {
 
     private final UserService userService;
 
+    private final OrderRepository orderRepository;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, OrderRepository orderRepository) {
         this.userService = userService;
+        this.orderRepository = orderRepository;
     }
 
 
@@ -70,6 +75,12 @@ public class UserController {
         return "redirect:/users";
 }
 
+
+@GetMapping("/showOrders")
+public List<Order> showOrders(){
+        return orderRepository.findAll();
+
+}
 
 }
 

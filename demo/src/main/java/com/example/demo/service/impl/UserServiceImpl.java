@@ -63,10 +63,8 @@ public class UserServiceImpl implements UserService {
             existingUser.setFirstName(updateUser.getFirstName());
             existingUser.setLastName(updateUser.getLastName());
             existingUser.setPassword(updateUser.getPassword());
-            existingUser.setEmail(updateUser.getEmail());
+            existingUser.setUsername(updateUser.getUsername());
             existingUser.setPhone(updateUser.getPhone());
-            existingUser.setBirth(updateUser.getBirth());
-
             // Save the updated user
             return userRepository.save(existingUser);
         } else {
@@ -76,8 +74,8 @@ public class UserServiceImpl implements UserService {
         }
 
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
 //    @Override

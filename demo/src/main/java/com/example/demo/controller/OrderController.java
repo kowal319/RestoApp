@@ -1,20 +1,22 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.OrderDto;
 import com.example.demo.service.CartService;
+import com.example.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/order")
 public class OrderController {
 
-
+private final OrderService orderService;
     private final CartService cartService;
 @Autowired
-    public OrderController(CartService cartService) {
-        this.cartService = cartService;
+    public OrderController(OrderService orderService, CartService cartService) {
+    this.orderService = orderService;
+    this.cartService = cartService;
     }
 
     @GetMapping("/cart")
@@ -40,6 +42,14 @@ public class OrderController {
     return "cartView";
     }
 
+    @GetMapping("/summary")
+    public String showSummary(){
+    return "summary";
+    }
 
-
-}
+    @PostMapping("/saveorder")
+    public String saveOrder(OrderDto orderDto){
+    orderService.saveOrder(orderDto);
+    return "redirect:/products";
+        }
+    }

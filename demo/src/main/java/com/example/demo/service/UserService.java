@@ -18,6 +18,7 @@ public interface UserService {
 
     User updateUser(Long id, User updateUser);
 
-    User findByEmail(String email);
+
+    User findByUsername(String username);
 //    void saveUser(RegistrationDto registrationDto);
 }

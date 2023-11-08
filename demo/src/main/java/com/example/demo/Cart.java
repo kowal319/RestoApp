@@ -64,4 +64,11 @@ public class Cart {
         cartItems.removeIf(i -> i.isEqual(product));
         recalculatePriceAndCounter();
     }
+
+    public void clearCart(){
+        cartItems.clear();
+        counter = 0;
+        sum = 0;
+
+    }
 }

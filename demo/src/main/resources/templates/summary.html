@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyShop</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+<div class="main-content">
+
+    <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+
+        <table cellspacing="0">
+            <tr>
+
+                <th>Nazwa</th>
+                <th>Ilość</th>
+                <th>Suma</th>
+                <th style="width: 30px;"></th>
+            </tr>
+            <tr th:each="cartItem : ${@cart.cartItems}">
+                <td>1</td>
+                <td th:text="${cartItem.product.name}"></td>
+                <td style="display: flex; padding-top: 10px">
+                    <p th:text="${cartItem.counter}"></p>
+                </td>
+                <td th:text="${cartItem.price}"></td>
+            </tr>
+        </table>
+
+        <div class="summary">
+            <p><span>Do zapłaty</span><span th:text="${@cart.sum}"></span>zł</p>
+        </div>
+
+        <form th:action="@{/order/saveorder}" method="post">
+        <button type="submit" class="add-btn">Zamów</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

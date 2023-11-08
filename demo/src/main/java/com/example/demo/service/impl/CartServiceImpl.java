@@ -25,6 +25,8 @@ public class CartServiceImpl implements CartService {
         this.productService = productService;
         this.cart = cart;
     }
+
+
     @Override
     public void addItemToCart(Long productId) {
         Product product = productService.findById(productId);
@@ -38,14 +40,16 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<Product> getAllProducts(){
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
     @Override
-    public void removeProduct(Long productId){
+    public void removeProduct(Long productId) {
         Product product = productService.findById(productId);
         cart.removeAllProductsFromCart(product);
     }
-    }
+
+
+}
 
