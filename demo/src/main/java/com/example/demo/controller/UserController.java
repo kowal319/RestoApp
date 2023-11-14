@@ -7,6 +7,8 @@ import com.example.demo.repository.OrderRepository;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +83,8 @@ public List<Order> showOrders(){
         return orderRepository.findAll();
 
 }
+
+
 
 }
 

@@ -22,7 +22,12 @@
 
 
 <h1>Product List</h1>
+
+<h2 href="#"> Welcome <b></b></h2>
 <a th:href="@{/products/newProduct}" class="btn btn-primary">Add Product</a>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="log out"/>
+</form>
 
 
 <table>

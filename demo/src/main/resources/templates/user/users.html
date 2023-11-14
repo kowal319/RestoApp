@@ -8,6 +8,9 @@
 <body>
 <h1>User List</h1>
 <a th:href="@{/users/addUser}" class="btn btn-primary">Add User</a>
+<form th:action="@{/logout}" method="post">
+  <input type="submit" value="log out"/>
+</form>
 
 <table>
   <thead>
@@ -24,9 +27,9 @@
   <tr th:each="user : ${users}">
     <td th:text="${user.firstName}"></td>
     <td th:text="${user.lastName}"></td>
-    <td th:text="${user.email}"></td>
+    <td th:text="${user.username}"></td>
     <td th:text="${user.phone}"></td>
-    <td th:text="${user.birth}"></td>
+
     <td>
       <a th:href="@{users/editUser/{id}(id=${user.id})}" class="btn btn-primary">Edit</a>
       <a th:href="@{users/deleteUser/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
