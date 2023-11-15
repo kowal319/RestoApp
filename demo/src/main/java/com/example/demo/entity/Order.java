@@ -21,8 +21,17 @@ public class Order {
     private Long orderId;
     private LocalDateTime created;
 
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+
     @OneToMany
     @JoinColumn(name = "orderId")
     private List<OrderItem> orderItems;
+
+
 
 }

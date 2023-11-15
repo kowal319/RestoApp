@@ -11,6 +11,6 @@ import java.time.LocalDateTime;
 @Setter
 public class OrderDto {
 
-
+private Long userId;
 }
 
