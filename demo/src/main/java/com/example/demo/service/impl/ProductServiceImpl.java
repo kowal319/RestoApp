@@ -53,4 +53,10 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
     }
+
+    @Override
+    public String getProductNameById(Long id){
+        Optional<Product> productOptional = productRepository.findById(id);
+        return productOptional.map(Product::getName).orElse("Product not found");
+    }
 }

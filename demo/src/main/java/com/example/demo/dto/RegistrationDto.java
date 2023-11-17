@@ -21,8 +21,11 @@ public class RegistrationDto {
     private String lastName;
     @NotEmpty(message = "Email must not be empty")
     @Email
-    private String email;
+    private String username;
     @NotEmpty(message = "Password must not be empty")
     private String password;
+    @NotEmpty(message = "Phone number must not be empty")
+    private String phone;
+
 
 }

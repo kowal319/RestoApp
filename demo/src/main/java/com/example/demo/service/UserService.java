@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.RegistrationDto;
 import com.example.demo.entity.User;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,5 +21,9 @@ public interface UserService {
 
 
     User findByUsername(String username);
+
+    User getCurrentUser(Authentication authentication);
+
+    User registerUser(RegistrationDto registrationDto);
 //    void saveUser(RegistrationDto registrationDto);
 }

@@ -11,9 +11,11 @@ import com.example.demo.repository.OrderRepository;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -52,12 +54,53 @@ public void saveOrder(OrderDto orderDto) {
     List<OrderItem> orderItems = OrderMapper.mapToOrderItemList(cart, order);
     order.setOrderItems(orderItems);
 
+    System.out.println("Order before save: " + order);
+    System.out.println("OrderItems before save: " + orderItems);
+
+
     // Save the order
     orderRepository.save(order);
+
+    System.out.println("Order after save: " + order);
+    System.out.println("OrderItems after save: " + orderItems);
+
 
     // Clear the cart after order is saved
     cart.clearCart();
 }
+
+    @Override
+    public List<Order> findAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public Order findById(Long id) {
+        Optional<Order> orderOptional = orderRepository.findById(id);
+        return orderOptional.orElse(null);
+    }
+
+    @Override
+    public List<Order> findOrdersByCurrentUser(Authentication authentication) {
+        User currentUser = userService.getCurrentUser(authentication);
+
+        if (hasRole(currentUser, "CUSTOMER")) {
+            // Fetch orders only for the current customer
+            return orderRepository.findByUser(currentUser);
+        } else {
+            // Fetch all orders for admin or employee
+            return orderRepository.findAll();
+        }
+    }
+
+
+
+
+
+    private boolean hasRole(User user, String roleName) {
+        return user.getRoles().stream()
+                .anyMatch(role -> role.getName().equals(roleName));
+    }
 
 
 }

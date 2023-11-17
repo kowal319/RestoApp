@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Product List</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+</head>
+<body>
+
+<header>
+  <span class="title"> All Orders</span>
+</header>
+
+
+<h1>Orders List</h1>
+
+<h2 href="#"> Welcome <b></b></h2>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Time</th>
+    <th>Username</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="order : ${orders}">
+    <td th:text="${order.orderId}"></td>
+    <td th:text="${order.created}"></td>
+    <td th:text="${order.user.username}"></td>
+    <td>
+      <a th:href="@{/order/orderDetails/{id}(id=${order.orderId})}">
+        <button type="button" class="btn btn-info">Info</button>
+      </a>
+    </td>
+
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

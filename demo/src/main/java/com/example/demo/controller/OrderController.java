@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
-import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import com.example.demo.OrderMapper;
+import com.example.demo.entity.Order;
 import com.example.demo.dto.OrderDto;
+import com.example.demo.entity.OrderItem;
 import com.example.demo.entity.User;
+import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.service.CartService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserService;
@@ -10,7 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/order")
@@ -20,11 +27,17 @@ private final OrderService orderService;
     private final CartService cartService;
 
     private final UserService userService;
+
+    private final OrderItemRepository orderItemRepository;
+
+    private final OrderMapper orderMapper;
 @Autowired
-    public OrderController(OrderService orderService, CartService cartService, UserService userService) {
+    public OrderController(OrderService orderService, CartService cartService, UserService userService, OrderItemRepository orderItemRepository, OrderMapper orderMapper) {
     this.orderService = orderService;
     this.cartService = cartService;
     this.userService = userService;
+    this.orderItemRepository = orderItemRepository;
+    this.orderMapper = orderMapper;
 }
 
     @GetMapping("/cart")
@@ -80,6 +93,44 @@ private final OrderService orderService;
 
         orderService.saveOrder(orderDto);
         return "redirect:/products";
+    }
+
+//    @GetMapping("/allOrders")
+//    public String viewAllOrders(Model model){
+//    List<Order> orders = orderService.findAllOrders();
+//    model.addAttribute("orders", orders);
+//    return "allOrders";
+//    }
+
+    @GetMapping("/allOrders")
+    public String viewAllOrders(Model model, Authentication authentication) {
+        List<Order> orders = orderService.findOrdersByCurrentUser(authentication);
+        model.addAttribute("orders", orders);
+        return "allOrders";
+    }
+
+
+    private boolean hasRole(User user, String roleName) {
+        return user.getRoles().stream()
+                .anyMatch(role -> role.getName().equals(roleName));
+    }
+
+
+    @GetMapping("/orderDetails/{id}")
+    public String viewOrderDetails(@PathVariable Long id, Model model) {
+        // Fetch the order and order items using your service or repository
+        Order order = orderService.findById(id);
+
+
+        // Map order items to a list of product names
+        List<String> productNames = orderMapper.mapOrderItemsToProductNames(order.getOrderItems());
+
+        // Add data to the model
+        model.addAttribute("order", order);
+        model.addAttribute("productNames", productNames);
+
+        // Return the Thymeleaf template name
+        return "orderDetails";
     }
 
 

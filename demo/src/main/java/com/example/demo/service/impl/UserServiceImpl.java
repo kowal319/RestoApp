@@ -1,11 +1,18 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.RegistrationDto;
+import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
@@ -76,6 +86,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+
+@Override
+    public User getCurrentUser(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            // Fetch and return the User object based on the username
+            return userRepository.findByUsername(username);
+        }
+        return null; // Or throw an exception, depending on your needs
+    }
+
+    @Override
+    public User registerUser(RegistrationDto registrationDto) {
+        User user = new User();
+        user.setFirstName(registrationDto.getFirstName());
+        user.setLastName(registrationDto.getLastName());
+        user.setUsername(registrationDto.getUsername());
+        user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        user.setPhone(registrationDto.getPhone());
+
+        // Set default role as "customer"
+        Role customerRole = roleRepository.findByName("CUSTOMER");
+        user.setRoles(new HashSet<>(Collections.singletonList(customerRole)));
+
+        return userRepository.save(user);
     }
 
 //    @Override
