@@ -17,4 +17,10 @@ public class HomeController {
         // Your login logic here
         return "redirect:/products"; // Redirect to the products page after successful login
     }
+
+    @GetMapping("/home")
+    public String homePage() {
+        // Your login logic here
+        return "home"; // Redirect to the products page after successful login
+    }
 }

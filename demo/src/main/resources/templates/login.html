@@ -30,6 +30,10 @@
             <a th:href="@{/registration}" class="btn btn-primary">Register</a>
 
           </form>
+
+          <div th:if="${param.registrationSuccess}" class="alert alert-success" role="alert">
+            Registration successful! You can now log in.
+          </div>
         </div>
       </div>
     </div>

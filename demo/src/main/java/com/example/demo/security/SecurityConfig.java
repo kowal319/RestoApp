@@ -32,6 +32,8 @@ public static PasswordEncoder passwordEncoder(){
       SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
             .authorizeHttpRequests((authorize) -> authorize
+                    .requestMatchers("/registration").permitAll()
+                    .requestMatchers("/home").permitAll()
                     .requestMatchers("/products/newProduct").hasAuthority("ADMIN")
                     .anyRequest().authenticated()
        ).httpBasic(Customizer.withDefaults())

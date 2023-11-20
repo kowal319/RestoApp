@@ -2,17 +2,57 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>User List</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
+  <style>
+        /* Add custom styles if needed */
+        body {
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007bff; /* Bootstrap primary color */
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #007bff; /* Bootstrap primary color */
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Alternate row color */
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
+
 <h1>User List</h1>
 <a th:href="@{/users/addUser}" class="btn btn-primary">Add User</a>
 <form th:action="@{/logout}" method="post">
-  <input type="submit" value="log out"/>
+  <input type="submit" value="Log Out" class="btn btn-secondary"/>
 </form>
 
-<table>
+<table class="table table-bordered table-striped">
   <thead>
   <tr>
     <th>First Name</th>
@@ -20,7 +60,7 @@
     <th>Email</th>
     <th>Phone</th>
     <th>Birth Date</th>
-    <th>Actions</th> <!-- Add a new column for actions -->
+    <th>Actions</th>
   </tr>
   </thead>
   <tbody>
@@ -29,13 +69,16 @@
     <td th:text="${user.lastName}"></td>
     <td th:text="${user.username}"></td>
     <td th:text="${user.phone}"></td>
-
     <td>
-      <a th:href="@{users/editUser/{id}(id=${user.id})}" class="btn btn-primary">Edit</a>
-      <a th:href="@{users/deleteUser/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
+      <div class="actions">
+        <a th:href="@{users/editUser/{id}(id=${user.id})}" class="btn btn-primary">Edit</a>
+        <a th:href="@{users/deleteUser/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
+        <a th:href="@{users/userOrders/{id}(id=${user.id})}" class="btn btn-info">User Orders</a>
+      </div>
     </td>
   </tr>
   </tbody>
 </table>
+
 </body>
 </html>
