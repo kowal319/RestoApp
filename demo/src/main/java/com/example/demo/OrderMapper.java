@@ -46,7 +46,11 @@ return Order.builder().created(LocalDateTime.now()).build();
        return productService.getProductNameById(productId);
     }
 
-
+    public List<Double> mapOrderItemsToProductPrices(List<OrderItem> orderItems) {
+        return orderItems.stream()
+                .map(orderItem -> productService.getProductPriceById(orderItem.getItemId()) * orderItem.getAmount())
+                .collect(Collectors.toList());
+    }
 
 
 }

@@ -18,4 +18,6 @@ public interface OrderService {
     Order findById(Long id);
 
     List<Order> findOrdersByCurrentUser(Authentication authentication);
+
+    Double getTotalSumInCart(Long orderId);
 }

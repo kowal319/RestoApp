@@ -59,4 +59,13 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> productOptional = productRepository.findById(id);
         return productOptional.map(Product::getName).orElse("Product not found");
     }
+
+    @Override
+    public double getProductPriceById(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+
+        return product.getPrice();
+    }
+
 }

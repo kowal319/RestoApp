@@ -4,11 +4,12 @@ package com.example.demo.controller;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
 import com.example.demo.repository.OrderRepository;
+import com.example.demo.service.OrderService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +24,13 @@ public class UserController {
 
     private final OrderRepository orderRepository;
 
+    private final OrderService orderService;
+
     @Autowired
-    public UserController(UserService userService, OrderRepository orderRepository) {
+    public UserController(UserService userService, OrderRepository orderRepository, OrderService orderService) {
         this.userService = userService;
         this.orderRepository = orderRepository;
+        this.orderService = orderService;
     }
 
 
@@ -83,6 +87,17 @@ public List<Order> showOrders(){
         return orderRepository.findAll();
 
 }
+
+    @GetMapping("/profile")
+    public String viewUserProfile(Model model, Authentication authentication) {
+        // Retrieve the currently logged-in user for order history
+        String loggedInUsername = authentication.getName();
+        User currentUser = userService.findByUsername(loggedInUsername);
+                model.addAttribute("userDetails", currentUser);
+
+        return "user/userDetails"; // The name of your Thymeleaf template for the profile page
+    }
+
 
 
 

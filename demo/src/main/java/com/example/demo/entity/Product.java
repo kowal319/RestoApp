@@ -26,6 +26,6 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "price")
+    @Column(name = "price", precision = 8, scale = 2) // Set precision and scale as needed
     private double price;
 }

@@ -93,13 +93,14 @@ public void saveOrder(OrderDto orderDto) {
         }
     }
 
-
-
-
-
     private boolean hasRole(User user, String roleName) {
         return user.getRoles().stream()
                 .anyMatch(role -> role.getName().equals(roleName));
+    }
+
+    @Override
+    public Double getTotalSumInCart(Long orderId) {
+        return orderRepository.findOrderTotalSum(orderId).orElse(0.0);
     }
 
 

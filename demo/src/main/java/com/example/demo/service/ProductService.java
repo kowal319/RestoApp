@@ -12,4 +12,6 @@ public interface ProductService {
     void deleteProduct(Long id);
     Product updateProduct(Long id, Product updateProduct);
     String getProductNameById(Long id);
+
+    double getProductPriceById(Long itemId);
 }

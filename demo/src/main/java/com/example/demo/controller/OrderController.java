@@ -125,6 +125,13 @@ private final OrderService orderService;
         // Map order items to a list of product names
         List<String> productNames = orderMapper.mapOrderItemsToProductNames(order.getOrderItems());
 
+
+        Double totalSumInCart = orderService.getTotalSumInCart(id);
+        model.addAttribute("totalSumInCart", totalSumInCart);
+        model.addAttribute("productPrices", orderMapper.mapOrderItemsToProductPrices(order.getOrderItems()));
+
+
+
         // Add data to the model
         model.addAttribute("order", order);
         model.addAttribute("productNames", productNames);
