@@ -90,15 +90,24 @@ public List<Order> showOrders(){
 
     @GetMapping("/profile")
     public String viewUserProfile(Model model, Authentication authentication) {
-        // Retrieve the currently logged-in user for order history
         String loggedInUsername = authentication.getName();
         User currentUser = userService.findByUsername(loggedInUsername);
-                model.addAttribute("userDetails", currentUser);
-
-        return "user/userDetails"; // The name of your Thymeleaf template for the profile page
+        model.addAttribute("userDetails", currentUser);
+        return "user/userDetails";
     }
 
+    @GetMapping("/myProfileEdit/{id}")
+    public String myProfileEditForm(@PathVariable Long id, Model model){
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "user/myProfileEdit";
+    }
 
+    @PostMapping("/myProfileEdit/{id}")
+    public String myProfileEditSave(@PathVariable Long id, @ModelAttribute User updatedUser){
+        userService.updateUser(id, updatedUser);
+        return "redirect:/users/profile";
+    }
 
 
 }

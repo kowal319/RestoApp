@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>My Profile</title>
+    <title>User Profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
-
     <style>
-        /* Add your custom styles here */
-body {
+        body {
             padding: 20px;
             align-items: center;
             justify-content: center;
@@ -18,13 +17,38 @@ body {
         }
 
         .card-container {
-            width: 48%;
-            padding: 20px;
+            display: flex;
+            width: 50%;
+            margin: 10px auto;
+            background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            width: 100%;
+            border: none;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
         }
 
         h5 {
             color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .user-details {
+            font-weight: bold;
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .user-details p {
+            margin: 0;
         }
 
         .user-details-btns {
@@ -39,6 +63,7 @@ body {
 </head>
 
 <div th:replace="product/header ::header"></div>
+
 <body>
 <div th:replace="product/header ::navbar"></div>
 <br />
@@ -46,18 +71,22 @@ body {
 <!-- User Details Card -->
 <div class="card-container">
     <div class="card">
-        <h5>User</h5>
-        <p>Name: <span th:text="${userDetails.FirstName}"></span></p>
-        <p>Last Name: <span th:text="${userDetails.LastName}"></span></p>
-        <p>Email: <span th:text="${userDetails.username}"></span></p>
-        <p>Phone: <span th:text="${userDetails.phone}"></span></p>
-        <div class="user-details-btns">
-            <a href="#" class="btn btn-primary">Edit Details</a>
-            <a href="#" class="btn btn-primary">Change Password</a>
+        <div class="card-body">
+            <h5>User</h5>
+            <div class="user-details">
+                <p>Name: <span th:text="${userDetails.FirstName}"></span></p>
+                <p>Last Name: <span th:text="${userDetails.LastName}"></span></p>
+                <p>Email: <span th:text="${userDetails.username}"></span></p>
+                <p>Phone: <span th:text="${userDetails.phone}"></span></p>
+            </div>
+            <div class="user-details-btns">
+                <a th:href="@{myProfileEdit/{id}(id=${userDetails.id})}" class="btn btn-primary">Edit details</a>
+                <a href="#" class="btn btn-primary">Change Password</a>
+            </div>
         </div>
     </div>
 </div>
-    <!-- Add your scripts and other body elements here -->
+<!-- Add your scripts and other body elements here -->
 
 </body>
 
