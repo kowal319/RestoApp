@@ -2,42 +2,165 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>MyShop</title>
+  <title>MyShop - Cart</title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-content {
+      max-width: 1200px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .go-back-btn {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .go-back-btn:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    .counter-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .counter-btn {
+      background-color: #28a745;
+      color: #fff;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin: 0 5px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .counter-btn:hover {
+      background-color: #218838;
+    }
+
+    .remove-btn {
+      background-color: #dc3545;
+      color: #fff;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .remove-btn:hover {
+      background-color: #c82333;
+    }
+
+    .summary {
+      text-align: right;
+    }
+
+    .summary span {
+      font-weight: bold;
+    }
+
+    .add-btn {
+      background-color: #28a745;
+      color: #fff;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .add-btn:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
+<div th:replace="product/header ::header"></div>
 <body>
+<div th:replace="product/header ::navbar"></div>
+<br />
 
 <div class="main-content">
 
-  <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+  <!-- Header (assuming you have a common header included) -->
 
-    <table cellspacing="0">
+
+  <!-- Cart Content -->
+  <div>
+    <!-- Go Back Button -->
+    <div class="cart-header">
+      <a th:href="@{/products}" class="go-back-btn">&lt; Go Back to Product List</a>
+      <h2>Your Shopping Cart</h2>
+    </div>
+
+    <table>
       <tr>
-
-        <th>Nazwa</th>
-        <th>Ilość</th>
-        <th>Suma</th>
-        <th style="width: 30px;"></th>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Action</th>
       </tr>
       <tr th:each="cartItem : ${@cart.cartItems}">
-        <td>1</td>
         <td th:text="${cartItem.product.name}"></td>
-        <td style="display: flex; padding-top: 10px">
-          <a class="mbtn" th:href="@{'/order/decrease/' + ${cartItem.product.id}}">-</a>
+        <td class="counter-container">
+          <a class="counter-btn" th:href="@{'/order/decrease/' + ${cartItem.product.id}}">-</a>
           <p th:text="${cartItem.counter}"></p>
-          <a class="mbtn" th:href="@{'/order/increase/' + ${cartItem.product.id}}">+</a>
+          <a class="counter-btn" th:href="@{'/order/increase/' + ${cartItem.product.id}}">+</a>
         </td>
         <td th:text="${cartItem.price}"></td>
         <td>
-          <a class="mbtn" th:href="@{'/order/remove/' + ${cartItem.product.id}}">X</a>
+          <a class="remove-btn" th:href="@{'/order/remove/' + ${cartItem.product.id}}">Remove</a>
         </td>
       </tr>
     </table>
 
+    <!-- Cart Summary -->
     <div class="summary">
-      <p><span>Do zapłaty</span><span th:text="${@cart.sum}"></span>zł</p>
+      <p><span>Total Amount</span><span th:text="${@cart.sum}"></span>zł</p>
     </div>
-    <a th:href="@{/order/summary}" class="add-btn">Dalej</a>
+
+    <!-- Proceed to Order Summary Button -->
+    <a th:href="@{/order/summary}" class="add-btn">Proceed to Checkout</a>
   </div>
 </div>
 </body>

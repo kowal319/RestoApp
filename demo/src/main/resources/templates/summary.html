@@ -2,40 +2,95 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>MyShop</title>
+    <title>MyShop - Order Confirmation</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+    <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-content {
+      max-width: 1200px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    .summary {
+      text-align: right;
+    }
+
+    .summary span {
+      font-weight: bold;
+    }
+
+    .add-btn {
+      background-color: #28a745;
+      color: #fff;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .add-btn:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
+<div th:replace="product/header ::header"></div>
 <body>
-
+<div th:replace="product/header ::navbar"></div>
+<br />
 <div class="main-content">
-
+    <!-- Confirmation Content -->
     <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
 
         <table cellspacing="0">
             <tr>
-
-                <th>Nazwa</th>
-                <th>Ilość</th>
-                <th>Suma</th>
-                <th style="width: 30px;"></th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Total</th>
             </tr>
             <tr th:each="cartItem : ${@cart.cartItems}">
-                <td>1</td>
                 <td th:text="${cartItem.product.name}"></td>
-                <td style="display: flex; padding-top: 10px">
-                    <p th:text="${cartItem.counter}"></p>
-                </td>
+                <td th:text="${cartItem.counter}"></td>
                 <td th:text="${cartItem.price}"></td>
             </tr>
         </table>
 
+        <!-- Order Summary -->
         <div class="summary">
-            <p><span>Do zapłaty</span><span th:text="${@cart.sum}"></span>zł</p>
+            <p><span>Total Amount</span><span th:text="${@cart.sum}"></span>zł</p>
         </div>
 
+        <!-- Place Order Button -->
         <form th:action="@{/order/saveorder}" method="post">
-        <button type="submit" class="add-btn">Zamów</button>
+            <button type="submit" class="add-btn">Place Order</button>
         </form>
+
     </div>
 </div>
 </body>

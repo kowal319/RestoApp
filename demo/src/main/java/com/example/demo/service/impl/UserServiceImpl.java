@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.ChangePasswordDTO;
 import com.example.demo.dto.RegistrationDto;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
@@ -126,6 +127,20 @@ public class UserServiceImpl implements UserService {
 //            user.setRoles(Arrays.asList(role));
 //            userRepository.save(user);
 //        }
+
+    @Override
+    public void changePassword(Long userId, ChangePasswordDTO changePasswordDTO) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())
+                && changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmPassword())) {
+
+            user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("Invalid old password or new password confirmation.");
+        }
+    }
 
 }
 
