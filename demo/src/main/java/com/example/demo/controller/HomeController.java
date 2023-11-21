@@ -15,12 +15,17 @@ public class HomeController {
     @PostMapping("/login")
     public String login() {
         // Your login logic here
-        return "redirect:/products"; // Redirect to the products page after successful login
+        return "redirect:/users/profile"; // Redirect to the products page after successful login
     }
 
     @GetMapping("/home")
     public String homePage() {
         // Your login logic here
         return "home"; // Redirect to the products page after successful login
+    }
+    @GetMapping("/homeAdmin")
+    public String homePageAdmin() {
+        // Your login logic here
+        return "admin/homeAdmin"; // Redirect to the products page after successful login
     }
 }

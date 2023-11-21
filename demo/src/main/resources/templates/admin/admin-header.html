@@ -37,21 +37,10 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/products}">Menu</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/users/profile}">My Profile</a>
+        <a class="nav-link" th:href="@{/homeAdmin}">Home</a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/order/myOrders}">My Orders</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">My Wallet</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-      </li>
+
       <li class="nav-item">
         <!-- Logout link -->
         <form th:action="@{/logout}" method="post">

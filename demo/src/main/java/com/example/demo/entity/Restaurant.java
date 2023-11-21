@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +34,7 @@ public class Restaurant {
     @Column(name = "phone")
     private String phone;
 
+
+//    @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL)
+//    private List<RestaurantTable> tables;
 }

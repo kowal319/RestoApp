@@ -37,6 +37,13 @@ public class ProductController {
         return "product/products";
     }
 
+    @GetMapping("/admin/allProducts")
+    public String viewAllProductsAdmin(Model model) {
+        List<Product> products = productService.findAllProducts();
+        model.addAttribute("products", products);
+        return "admin/productsAdmin";
+    }
+
     @PostMapping("/save")
     public String createProduct(@ModelAttribute("product") Product product) {
          productService.createProduct(product);

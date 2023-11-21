@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Restaurant List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <style>
+        /* Add custom styles if needed */
+        body {
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007bff; /* Bootstrap primary color */
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #007bff; /* Bootstrap primary color */
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Alternate row color */
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Your common header -->
+<div th:replace="product/header ::header"></div>
+
+<!-- Your common navbar -->
+<div th:replace="product/header ::navbar"></div>
+<br />
+
+<h1>Restaurant List</h1>
+<a th:href="@{/restaurants/add}" class="btn btn-primary">Add Restaurant</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="restaurant : ${restaurants}">
+        <td th:text="${restaurant.name}"></td>
+        <td th:text="${restaurant.address}"></td>
+        <td th:text="${restaurant.email}"></td>
+        <td th:text="${restaurant.phone}"></td>
+        <td>
+            <div class="actions">
+                <a th:href="@{/restaurants/edit/{id}(id=${restaurant.id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/restaurants/delete/{id}(id=${restaurant.id})}" class="btn btn-danger">Delete</a>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

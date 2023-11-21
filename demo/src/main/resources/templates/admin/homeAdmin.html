@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Product Management</title>
+  <title>Admin Dashboard</title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 
   <style>
@@ -65,25 +65,6 @@
         .btn:hover {
             background-color: #218838;
         }
-
-        table {
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
     </style>
 </head>
 <div th:replace="admin/admin-header ::header"></div>
@@ -94,37 +75,42 @@
 
 <div class="main-content">
 
-  <h1>Admin Product Management</h1>
+  <h1>Admin Dashboard</h1>
 
-  <!-- Add Product Button -->
-  <div class="actions">
-    <a th:href="@{/products/newProduct}" class="btn">Add Product</a>
+  <!-- User Management Section -->
+  <div class="section">
+    <div class="card">
+      <h2>User Management</h2>
+      <p>Manage users, view orders, and more.</p>
+      <div class="actions">
+        <a th:href="@{/users}" class="btn">Manage Users</a>
+      </div>
+    </div>
   </div>
 
-  <!-- Product Table -->
-  <table>
-    <thead>
-    <tr>
-      <th>Product Name</th>
-      <th>Price</th>
-      <th>Details</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Example product row, replace with Thymeleaf iteration -->
-    <tr th:each="product : ${products}">
-      <td th:text="${product.name}"></td>
-      <td th:text="${product.price}"></td>
-      <td th:text="${product.description}"></td>
-      <td>
-        <a th:href="@{/products/editProduct/{id}(id=1)}" class="btn">Edit</a>
-        <a th:href="@{/products/deleteProduct/{id}(id=1)}" class="btn">Delete</a>
-      </td>
-    </tr>
-    <!-- End of example row -->
-    </tbody>
-  </table>
+  <!-- Product Management Section -->
+  <div class="section">
+    <div class="card">
+      <h2>Product Management</h2>
+      <p>Add, edit, and delete products.</p>
+      <div class="actions">
+        <a th:href="@{/products/admin/allProducts}" class="btn">Manage Products</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Management Section -->
+  <div class="section">
+    <div class="card">
+      <h2>Order Management</h2>
+      <p>View and process customer orders.</p>
+      <div class="actions">
+        <a th:href="@{order/admin/allOrders}" class="btn">View Orders</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add more sections based on your application's features -->
 
 </div>
 

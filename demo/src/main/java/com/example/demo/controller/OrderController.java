@@ -102,11 +102,18 @@ private final OrderService orderService;
 //    return "allOrders";
 //    }
 
-    @GetMapping("/allOrders")
-    public String viewAllOrders(Model model, Authentication authentication) {
+    @GetMapping("/myOrders")
+    public String viewMyOrders(Model model, Authentication authentication) {
         List<Order> orders = orderService.findOrdersByCurrentUser(authentication);
         model.addAttribute("orders", orders);
-        return "allOrders";
+        return "myOrders";
+    }
+
+    @GetMapping("/admin/allOrders")
+    public String viewAllOrders(Model model) {
+        List<Order> orders = orderService.findAllOrders();
+        model.addAttribute("orders", orders);
+        return "admin/allOrders";
     }
 
 

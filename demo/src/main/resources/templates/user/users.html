@@ -44,13 +44,18 @@
         }
     </style>
 </head>
+
+<div th:replace="admin/admin-header ::header"></div>
+
 <body>
+<div th:replace="admin/admin-header ::navbar"></div>
+<br />
 
 <h1>User List</h1>
 <a th:href="@{/users/addUser}" class="btn btn-primary">Add User</a>
-<form th:action="@{/logout}" method="post">
-  <input type="submit" value="Log Out" class="btn btn-secondary"/>
-</form>
+<!--<form th:action="@{/logout}" method="post">-->
+<!--  <input type="submit" value="Log Out" class="btn btn-secondary"/>-->
+<!--</form>-->
 
 <table class="table table-bordered table-striped">
   <thead>
@@ -59,7 +64,6 @@
     <th>Last Name</th>
     <th>Email</th>
     <th>Phone</th>
-    <th>Birth Date</th>
     <th>Actions</th>
   </tr>
   </thead>
