@@ -60,14 +60,32 @@ public class RestaurantController {
     @GetMapping("/editRestaurant/{id}")
     public String editRestaurantForm(@PathVariable Long id, Model model){
         Restaurant restaurant = restaurantService.findById(id);
+        int tableCount = restaurant.getTableCount();  // Adjust this based on your Restaurant class
+
         model.addAttribute("restaurant", restaurant);
+        model.addAttribute("tableCount", tableCount); // Add this line
+
         return "admin/restaurant/edit-restaurant";
     }
 
     @PostMapping("/editRestaurant/{id}")
     public String editRestaurant(@PathVariable Long id, @ModelAttribute Restaurant updatedRestaurant){
     restaurantService.updateRestaurant(id, updatedRestaurant);
-    return "redirect:/restaurants";
+        // Manually fetch the restaurant after the update
+        Restaurant fetchedRestaurant = restaurantService.findById(id);
+        return "redirect:/restaurants";
     }
+
+//    @GetMapping("/increaseTables/{id}")
+//    public String increaseTables(@PathVariable Long id) {
+//        restaurantService.increaseTables(id);
+//        return "redirect:/restaurants/editRestaurant/" + id;
+//    }
+//
+//    @GetMapping("/decreaseTables/{id}")
+//    public String decreaseTables(@PathVariable Long id) {
+//        restaurantService.decreaseTables(id);
+//        return "redirect:/restaurants/editRestaurant/" + id;
+//    }
 
 }

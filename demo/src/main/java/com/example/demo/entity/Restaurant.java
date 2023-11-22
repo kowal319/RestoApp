@@ -35,6 +35,10 @@ public class Restaurant {
     private String phone;
 
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<RestaurantTable> tables;
+//    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+//    private List<RestaurantTable> tables;
+
+    @Column(name = "table_count")
+    private int tableCount;
+
 }

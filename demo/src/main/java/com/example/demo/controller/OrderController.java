@@ -1,13 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.OrderMapper;
-import com.example.demo.entity.Order;
+import com.example.demo.entity.*;
 import com.example.demo.dto.OrderDto;
-import com.example.demo.entity.OrderItem;
-import com.example.demo.entity.User;
 import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.service.CartService;
 import com.example.demo.service.OrderService;
+import com.example.demo.service.RestaurantService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -30,13 +29,16 @@ private final OrderService orderService;
     private final OrderItemRepository orderItemRepository;
 
     private final OrderMapper orderMapper;
+
+    private final RestaurantService restaurantService;
 @Autowired
-    public OrderController(OrderService orderService, CartService cartService, UserService userService, OrderItemRepository orderItemRepository, OrderMapper orderMapper) {
+    public OrderController(OrderService orderService, CartService cartService, UserService userService, OrderItemRepository orderItemRepository, OrderMapper orderMapper, RestaurantService restaurantService) {
     this.orderService = orderService;
     this.cartService = cartService;
     this.userService = userService;
     this.orderItemRepository = orderItemRepository;
     this.orderMapper = orderMapper;
+    this.restaurantService = restaurantService;
 }
 
     @GetMapping("/cart")
@@ -167,6 +169,19 @@ private final OrderService orderService;
 
         // Return the Thymeleaf template name
         return "admin/order/orderDetailsAdmin";
+    }
+
+    @PostMapping("/menu/choose-restaurant")
+    public String chooseRestaurant(@RequestParam("restaurantId") Long restaurantId, Model model) {
+        // You can retrieve the selected restaurant and pass it to the next view
+        Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
+        model.addAttribute("selectedRestaurant", selectedRestaurant);
+
+        // Assuming you have a method to retrieve available tables in the restaurant
+//        List<RestaurantTable> tables = tableService.(restaurantId);
+//        model.addAttribute("tables", tables);
+
+        return "choose-table"; // Redirect to a page where user can choose a table
     }
 
 }

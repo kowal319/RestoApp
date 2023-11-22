@@ -11,4 +11,9 @@ public interface RestaurantService {
     Restaurant createRestaurant(Restaurant restaurant);
     String deleteRestaurant(Long id);
     Restaurant updateRestaurant(Long id, Restaurant updateRestaurant);
+
+
+    void increaseTables(Long id);
+
+    void decreaseTables(Long id);
 }

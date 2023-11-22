@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.Restaurant;
 import com.example.demo.repository.RestaurantRepository;
 import com.example.demo.service.RestaurantService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Transactional
     public Restaurant updateRestaurant(Long id, Restaurant updateRestaurant) {
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
     if(optionalRestaurant.isPresent()){
@@ -49,10 +51,34 @@ public class RestaurantServiceImpl implements RestaurantService {
         existingRestaurant.setAddress(updateRestaurant.getAddress());
         existingRestaurant.setEmail(updateRestaurant.getEmail());
         existingRestaurant.setPhone(updateRestaurant.getPhone());
+        existingRestaurant.setTableCount(updateRestaurant.getTableCount()); // Update table count
+
+        System.out.println("Updated Restaurant: " + existingRestaurant);
 
         return restaurantRepository.save(existingRestaurant);
     }else {
         return null;
     }
+    }
+
+    @Override
+    public void increaseTables(Long id) {
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
+        optionalRestaurant.ifPresent(restaurant -> {
+            restaurant.setTableCount(restaurant.getTableCount() + 1);
+            restaurantRepository.save(restaurant);
+        });
+    }
+
+    @Override
+    public void decreaseTables(Long id) {
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
+        optionalRestaurant.ifPresent(restaurant -> {
+            int currentTableCount = restaurant.getTableCount();
+            if (currentTableCount > 0) {
+                restaurant.setTableCount(currentTableCount - 1);
+                restaurantRepository.save(restaurant);
+            }
+        });
     }
 }

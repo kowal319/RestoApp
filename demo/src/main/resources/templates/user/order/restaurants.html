@@ -1,10 +1,32 @@
+<!-- menu.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Menu</title>
+    <!-- Add your CSS links and styles here -->
 </head>
 <body>
 
+<!-- Your common header -->
+<div th:replace="product/header ::header"></div>
+
+<!-- Your common navbar -->
+<div th:replace="product/header ::navbar"></div>
+<br />
+
+<div class="main-content">
+    <h2>Choose a Restaurant</h2>
+
+    <form th:action="@{/menu/choose-restaurant}" method="post">
+        <label for="restaurant">Select a Restaurant:</label>
+        <select id="restaurant" name="restaurantId">
+            <!-- Populate this dropdown with restaurants from your backend -->
+            <option th:each="restaurant : ${restaurants}" th:value="${restaurant.id}" th:text="${restaurant.name}"></option>
+        </select>
+
+        <button type="submit">Proceed</button>
+    </form>
+</div>
 </body>
 </html>
