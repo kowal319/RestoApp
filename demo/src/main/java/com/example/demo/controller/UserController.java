@@ -38,7 +38,7 @@ public class UserController {
     public String showAllUsers(Model model) {
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
-        return "user/users";
+        return "admin/user/users";
     }
 
         @PostMapping("/save")
@@ -50,7 +50,7 @@ public class UserController {
         @GetMapping("/addUser")
         public String showAddUserPage(Model model){
         model.addAttribute("user", new User());
-        return "user/add-user";
+        return "admin/user/add-user";
         }
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
@@ -72,7 +72,7 @@ public class UserController {
     public String editUserForm(@PathVariable Long id, Model model){
         User user = userService.findById(id);
         model.addAttribute("user", user);
-        return "user/edit-user";
+        return "admin/user/edit-user";
 }
 
 @PostMapping("/editUser/{id}")
@@ -93,14 +93,14 @@ public List<Order> showOrders(){
         String loggedInUsername = authentication.getName();
         User currentUser = userService.findByUsername(loggedInUsername);
         model.addAttribute("userDetails", currentUser);
-        return "user/userDetails";
+        return "user/profile/userDetails";
     }
 
     @GetMapping("/myProfileEdit/{id}")
     public String myProfileEditForm(@PathVariable Long id, Model model){
         User user = userService.findById(id);
         model.addAttribute("user", user);
-        return "user/myProfileEdit";
+        return "user/profile/myProfileEdit";
     }
 
     @PostMapping("/myProfileEdit/{id}")

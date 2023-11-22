@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/order")
@@ -42,30 +41,30 @@ private final OrderService orderService;
 
     @GetMapping("/cart")
     public String showCart(){
-        return "cartView";
+        return "user/order/cartView";
     }
 
     @GetMapping("/increase/{productId}")
     public String increaseProduct(@PathVariable("productId") Long productId){
     cartService.addItemToCart(productId);
-    return "cartView";
+    return "user/order/cartView";
     }
 
     @GetMapping("/decrease/{productId}")
     public String decreaseProduct(@PathVariable("productId") Long productId){
         cartService.decreaseItem(productId);
-        return "cartView";
+        return "user/order/cartView";
     }
 
     @GetMapping("/remove/{productId}")
     public String removeProductFromCart(@PathVariable("productId") Long productId){
     cartService.removeProduct(productId);
-    return "cartView";
+    return "user/order/cartView";
     }
 
     @GetMapping("/summary")
     public String showSummary(){
-    return "summary";
+    return "user/order/summary";
     }
 
 //    @PostMapping("/saveorder")
@@ -92,7 +91,7 @@ private final OrderService orderService;
         orderDto.setUserId(currentUser.getId());
 
         orderService.saveOrder(orderDto);
-        return "redirect:/products";
+        return "redirect:/order/myOrders";
     }
 
 //    @GetMapping("/allOrders")
@@ -106,14 +105,14 @@ private final OrderService orderService;
     public String viewMyOrders(Model model, Authentication authentication) {
         List<Order> orders = orderService.findOrdersByCurrentUser(authentication);
         model.addAttribute("orders", orders);
-        return "myOrders";
+        return "user/order/myOrders";
     }
 
     @GetMapping("/admin/allOrders")
     public String viewAllOrders(Model model) {
         List<Order> orders = orderService.findAllOrders();
         model.addAttribute("orders", orders);
-        return "admin/allOrders";
+        return "admin/order/allOrders";
     }
 
 
@@ -124,6 +123,29 @@ private final OrderService orderService;
 
 
     @GetMapping("/orderDetails/{id}")
+    public String viewOrderDetailsAdmin(@PathVariable Long id, Model model) {
+        // Fetch the order and order items using your service or repository
+        Order order = orderService.findById(id);
+
+
+        // Map order items to a list of product names
+        List<String> productNames = orderMapper.mapOrderItemsToProductNames(order.getOrderItems());
+
+
+        Double totalSumInCart = orderService.getTotalSumInCart(id);
+        model.addAttribute("totalSumInCart", totalSumInCart);
+        model.addAttribute("productPrices", orderMapper.mapOrderItemsToProductPrices(order.getOrderItems()));
+
+
+
+        // Add data to the model
+        model.addAttribute("order", order);
+        model.addAttribute("productNames", productNames);
+
+        // Return the Thymeleaf template name
+        return "user/order/orderDetails";
+    }
+    @GetMapping("/admin/orderDetails/{id}")
     public String viewOrderDetails(@PathVariable Long id, Model model) {
         // Fetch the order and order items using your service or repository
         Order order = orderService.findById(id);
@@ -144,9 +166,7 @@ private final OrderService orderService;
         model.addAttribute("productNames", productNames);
 
         // Return the Thymeleaf template name
-        return "orderDetails";
+        return "admin/order/orderDetailsAdmin";
     }
-
-
 
 }

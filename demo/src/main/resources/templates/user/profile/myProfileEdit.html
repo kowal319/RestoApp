@@ -8,12 +8,12 @@
 <h1>Edit User</h1>
 <form th:action="@{/users/myProfileEdit/{id}(id=${user.id})}" method="post">
     <div class="form-group">
-        <label for="firstName">firstName:</label>
-        <input type="text" class="form-control" id="firstName" name="firstName" required="required" th:value="${user.firstName}" />
+        <label for="FirstName">FirstName:</label>
+        <input type="text" class="form-control" id="FirstName" name="FirstName" required="required" th:value="${user.firstName}" />
     </div>
     <div class="form-group">
-        <label for="lastName">lastName:</label>
-        <input type="text" class="form-control" id="lastName" name="lastName" th:value="${user.lastName}" />
+        <label for="LastName">LastName:</label>
+        <input type="text" class="form-control" id="LastName" name="LastName" th:value="${user.lastName}" />
     </div>
     <div class="form-group">
         <label for="username">email:</label>

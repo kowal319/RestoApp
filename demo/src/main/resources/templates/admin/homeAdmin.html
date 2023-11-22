@@ -67,12 +67,11 @@
         }
     </style>
 </head>
-<div th:replace="admin/admin-header ::header"></div>
+<div th:replace="admin/fragments/admin-header ::header"></div>
 
 <body>
-<div th:replace="admin/admin-header ::navbar"></div>
+<div th:replace="admin/fragments/admin-header ::navbar"></div>
 <br />
-
 <div class="main-content">
 
   <h1>Admin Dashboard</h1>
@@ -106,6 +105,15 @@
       <p>View and process customer orders.</p>
       <div class="actions">
         <a th:href="@{order/admin/allOrders}" class="btn">View Orders</a>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="card">
+      <h2>Restaurant Management</h2>
+      <p>Add, edit, and delete restaurants.</p>
+      <div class="actions">
+        <a th:href="@{restaurants}" class="btn">View Restaurants</a>
       </div>
     </div>
   </div>

@@ -29,23 +29,10 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant createRestaurant(Restaurant restaurant) {
-        if(isAddressAlreadyExists(restaurant.getAddress())){
-            throw new IllegalArgumentException("Address already exists");
-        }
-        if(isEmailAlreadyExists(restaurant.getEmail())){
-            throw new IllegalArgumentException(("Email already exists"));
-        }
-
         return restaurantRepository.save(restaurant);
     }
 
-    private boolean isAddressAlreadyExists(String address){
-        return restaurantRepository.existsByAddress(address);
-    }
 
-    private boolean isEmailAlreadyExists(String email){
-        return restaurantRepository.existsByEmail(email);
-    }
 
     @Override
     public String deleteRestaurant(Long id) {

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Add your head content here -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+  <style>
+        body {
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card-container {
+            width: 50%;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a.btn {
+            margin-top: 10px;
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+
+</head>
+
+<div th:replace="user/fragments/header ::header"></div>
+<body>
+<div th:replace="user/fragments/header ::navbar"></div>
+<br />
+
+<div class="card-container">
+  <h1>Order Details</h1>
+
+  <p>Total Sum in Cart: <span th:text="${totalSumInCart}"></span> zł</p>
+
+  <p>ID: <span th:text="${order.orderId}"></span></p>
+  <p>Created: <span th:text="${order.created}"></span></p>
+<!--  <p>Username: <span th:text="${order.user.username}"></span></p>-->
+
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Amount</th>
+      <th>Price</th>
+    </tr>
+    <tr th:each="orderItem, itemIndex : ${order.orderItems}">
+      <td th:text="${productNames[itemIndex.index]}"></td>
+      <td th:text="${orderItem.amount}"></td>
+      <td th:text="${productPrices[itemIndex.index]}"></td>
+
+    </tr>
+  </table>
+
+  <a th:href="@{/order/myOrders}" class="btn btn-primary">Back to Orders</a>
+</div>
+
+</body>
+</html>

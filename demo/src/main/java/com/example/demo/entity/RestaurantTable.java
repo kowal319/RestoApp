@@ -24,8 +24,8 @@ public class RestaurantTable {
     private int tableNumber;
 
 //    // You can add more attributes as needed, e.g., capacity, location, etc.
-//
-//    @ManyToOne
-//    @JoinColumn(name = "restaurant_id", nullable = false)
-//    private Restaurant restaurant;
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
 }

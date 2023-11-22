@@ -24,7 +24,7 @@ public class ChangePasswordController {
         ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
         model.addAttribute("userId", id);
         model.addAttribute("changePasswordDTO", changePasswordDTO);
-        return "user/change-password";
+        return "user/profile/change-password";
     }
 
     @PostMapping("/changePassword/{id}")

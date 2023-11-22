@@ -86,10 +86,10 @@
         }
     </style>
 </head>
-<div th:replace="admin/admin-header ::header"></div>
+<div th:replace="admin/fragments/admin-header ::header"></div>
 
 <body>
-<div th:replace="admin/admin-header ::navbar"></div>
+<div th:replace="admin/fragments/admin-header ::navbar"></div>
 <br />
 
 <div class="main-content">
@@ -118,8 +118,9 @@
       <td th:text="${product.price}"></td>
       <td th:text="${product.description}"></td>
       <td>
-        <a th:href="@{/products/editProduct/{id}(id=1)}" class="btn">Edit</a>
-        <a th:href="@{/products/deleteProduct/{id}(id=1)}" class="btn">Delete</a>
+        <a th:href="@{/products/editProduct/{id}(id=${product.id})}" class="btn btn-primary">Edit</a>
+        <a th:href="@{/products/deleteProduct/{id}(id=${product.id})}" class="btn btn-danger">Delete</a>
+
       </td>
     </tr>
     <!-- End of example row -->

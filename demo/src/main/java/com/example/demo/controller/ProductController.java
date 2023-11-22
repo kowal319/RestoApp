@@ -30,30 +30,32 @@ public class ProductController {
         this.cartService = cartService;
     }
 
+
+    //userview
     @GetMapping()
     public String viewAllProducts(Model model) {
         List<Product> products = productService.findAllProducts();
         model.addAttribute("products", products);
-        return "product/products";
+        return "user/order/products";
     }
 
     @GetMapping("/admin/allProducts")
     public String viewAllProductsAdmin(Model model) {
         List<Product> products = productService.findAllProducts();
         model.addAttribute("products", products);
-        return "admin/productsAdmin";
+        return "admin/product/allProducts";
     }
 
     @PostMapping("/save")
     public String createProduct(@ModelAttribute("product") Product product) {
          productService.createProduct(product);
-         return "redirect:/products";
+         return "redirect:/products/admin/allProducts";
     }
 
     @GetMapping("/newProduct")
     public String showAddProductPage(Model model) {
         model.addAttribute("product", new Product());
-        return "product/add-product";
+        return "admin/product/add-product";
     }
 
     @GetMapping("/{id}")
@@ -69,7 +71,7 @@ public class ProductController {
     @GetMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable("id") Long id){
         productService.deleteProduct(id);
-        return "redirect:/products";
+        return "redirect:/products/admin/allProducts";
 }
 
 
@@ -78,20 +80,20 @@ public class ProductController {
     public String editProductForm(@PathVariable Long id, Model model) {
         Product product = productService.findById(id);
         model.addAttribute("product", product);
-        return "product/edit-product"; // Create an "edit-product.html" template
+        return "admin/product/edit-product"; // Create an "edit-product.html" template
     }
 
     @PostMapping("/editProduct/{id}")
     public String editProduct(@PathVariable Long id, @ModelAttribute Product updatedProduct) {
         productService.updateProduct(id, updatedProduct);
-        return "redirect:/products"; // Redirect to the product list page after editing.
+        return "redirect:/products/admin/allProducts"; // Redirect to the product list page after editing.
     }
 
     @GetMapping("/addProduct/{productId}")
     public String addItemToCart(@PathVariable("productId") Long productId, Model model){
         cartService.addItemToCart(productId);
         model.addAttribute("products", cartService.getAllProducts());
-        return "product/products";
+        return "user/order/products";
     }
 
 

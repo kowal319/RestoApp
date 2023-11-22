@@ -35,6 +35,6 @@ public class Restaurant {
     private String phone;
 
 
-//    @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL)
-//    private List<RestaurantTable> tables;
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<RestaurantTable> tables;
 }

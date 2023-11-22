@@ -44,17 +44,14 @@
         }
     </style>
 </head>
+<div th:replace="admin/fragments/admin-header ::header"></div>
+
 <body>
-
-<!-- Your common header -->
-<div th:replace="product/header ::header"></div>
-
-<!-- Your common navbar -->
-<div th:replace="product/header ::navbar"></div>
+<div th:replace="admin/fragments/admin-header ::navbar"></div>
 <br />
 
 <h1>Restaurant List</h1>
-<a th:href="@{/restaurants/add}" class="btn btn-primary">Add Restaurant</a>
+<a th:href="@{/restaurants/addRestaurant}" class="btn btn-primary">Add Restaurant</a>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -74,8 +71,8 @@
         <td th:text="${restaurant.phone}"></td>
         <td>
             <div class="actions">
-                <a th:href="@{/restaurants/edit/{id}(id=${restaurant.id})}" class="btn btn-primary">Edit</a>
-                <a th:href="@{/restaurants/delete/{id}(id=${restaurant.id})}" class="btn btn-danger">Delete</a>
+                <a th:href="@{/restaurants/editRestaurant/{id}(id=${restaurant.id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/restaurants/deleteRestaurant/{id}(id=${restaurant.id})}" class="btn btn-danger">Delete</a>
             </div>
         </td>
     </tr>

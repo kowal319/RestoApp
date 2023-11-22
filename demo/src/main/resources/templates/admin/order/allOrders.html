@@ -40,10 +40,10 @@
         }
     </style>
 </head>
+<div th:replace="admin/fragments/admin-header ::header"></div>
 
-<div th:replace="product/header ::header"></div>
 <body>
-<div th:replace="product/header ::navbar"></div>
+<div th:replace="admin/fragments/admin-header ::navbar"></div>
 <br />
 
 <!-- User Details Card -->
@@ -62,7 +62,7 @@
       <td th:text="${order.orderId}"></td>
       <td th:text="${order.created}"></td>
       <td>
-        <a th:href="@{/order/orderDetails/{id}(id=${order.orderId})}">
+        <a th:href="@{/order/admin/orderDetails/{id}(id=${order.orderId})}">
           <button type="button" class="btn btn-info">Info</button>
         </a>
       </td>
@@ -72,7 +72,7 @@
 </div>
 </div>
 
-  <!-- Add your scripts and other body elements here -->
+<!-- Add your scripts and other body elements here -->
 
 </body>
 

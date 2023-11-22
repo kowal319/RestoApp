@@ -59,11 +59,31 @@ public class UserServiceImpl implements UserService {
     }
 
 
+//    @Override
+//    public String deleteUser(Long id) {
+//        userRepository.deleteById(id);
+//        return "User with ID " + id + " has been deleted.";
+//    }
+
     @Override
     public String deleteUser(Long id) {
-        userRepository.deleteById(id);
-        return "User with ID " + id + " has been deleted.";
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            // Remove roles associated with the user
+            user.getRoles().clear();
+            userRepository.save(user);
+
+            // Delete the user
+            userRepository.deleteById(id);
+
+            return "User with ID " + id + " has been deleted.";
+        } else {
+            return "User with ID " + id + " not found.";
+        }
     }
+
 
     @Override
     public User updateUser(Long id, User updateUser) {

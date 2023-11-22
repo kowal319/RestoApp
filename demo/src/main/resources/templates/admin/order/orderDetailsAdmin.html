@@ -52,8 +52,13 @@
     </style>
 </head>
 
+</head>
+
+<div th:replace="admin/fragments/admin-header ::header"></div>
+
 <body>
-<div th:replace="product/header ::navbar"></div>
+<div th:replace="admin/fragments/admin-header ::navbar"></div>
+<br />
 
 <div class="card-container">
   <h1>Order Details</h1>
@@ -62,7 +67,7 @@
 
   <p>ID: <span th:text="${order.orderId}"></span></p>
   <p>Created: <span th:text="${order.created}"></span></p>
-<!--  <p>Username: <span th:text="${order.user.username}"></span></p>-->
+    <p>Username: <span th:text="${order.user.username}"></span></p>
 
   <table>
     <tr>
@@ -78,7 +83,7 @@
     </tr>
   </table>
 
-  <a href="/order/allOrders" class="btn btn-primary">Back to Orders</a>
+  <a th:href="@{/order/admin/allOrders}" class="btn btn-primary">Back to Orders</a>
 </div>
 
 </body>
