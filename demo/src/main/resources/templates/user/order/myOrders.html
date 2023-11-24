@@ -54,13 +54,19 @@
     <tr>
       <th>Order ID</th>
       <th>Date</th>
+      <th>Restaurant name</th>
+      <th>Table number</th>
       <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="order : ${orders}">
       <td th:text="${order.orderId}"></td>
-      <td th:text="${order.created}"></td>
+      <td th:text="${#temporals.format(order.created, 'yyyy-MM-dd HH:mm:ss')}"></td>
+<!--      <td th:text="${order.restaurant.id}"></td>-->
+      <td th:text="${order.restaurant?.name}"></td>
+
+      <td th:text="${order.tableNumber}"></td>
       <td>
         <a th:href="@{/order/orderDetails/{id}(id=${order.orderId})}">
           <button type="button" class="btn btn-info">Info</button>

@@ -12,5 +12,8 @@ import java.time.LocalDateTime;
 public class OrderDto {
 
 private Long userId;
+    private Long restaurantId;
+    private Integer tableNumber;
+
 }
 

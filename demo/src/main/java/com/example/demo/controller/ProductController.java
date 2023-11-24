@@ -1,15 +1,18 @@
 package com.example.demo.controller;
 
 import com.example.demo.Cart;
+import com.example.demo.dto.OrderDto;
 import com.example.demo.entity.Product;
 import com.example.demo.service.CartService;
 import com.example.demo.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -19,9 +22,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final Cart cart;
-
     private final CartService cartService;
-
 
     @Autowired
     public ProductController(ProductService productService, Cart cart, CartService cartService) {
@@ -31,13 +32,31 @@ public class ProductController {
     }
 
 
-    //userview
-    @GetMapping()
-    public String viewAllProducts(Model model) {
-        List<Product> products = productService.findAllProducts();
-        model.addAttribute("products", products);
-        return "user/order/products";
-    }
+//      View all products without user id restuarnt id and table number
+//    @GetMapping()
+//    public String viewAllProducts(Model model) {
+//        List<Product> products = productService.findAllProducts();
+//        model.addAttribute("products", products);
+//        return "user/order/products";
+//    }
+@GetMapping()
+public String viewAllProducts(Model model, HttpSession session) {
+    List<Product> products = productService.findAllProducts();
+
+    // Retrieve restaurant and table information from the session
+    Long restaurantId = (Long) session.getAttribute("restaurantId");
+    Integer selectedTable = (Integer) session.getAttribute("selectedTable");
+
+    model.addAttribute("products", products);
+    model.addAttribute("restaurantId", restaurantId);
+    model.addAttribute("selectedTable", selectedTable);
+
+    System.out.println("restaurantId in controller: " + restaurantId);
+    System.out.println("selectedTable in controller: " + selectedTable);
+
+    return "user/order/products";
+}
+
 
     @GetMapping("/admin/allProducts")
     public String viewAllProductsAdmin(Model model) {
@@ -89,14 +108,22 @@ public class ProductController {
         return "redirect:/products/admin/allProducts"; // Redirect to the product list page after editing.
     }
 
+
+    //Here under I added http session to save restaurant id and selectedtable,
     @GetMapping("/addProduct/{productId}")
-    public String addItemToCart(@PathVariable("productId") Long productId, Model model){
+    public String addItemToCart(@PathVariable("productId") Long productId, Model model, OrderDto orderDto, HttpSession session){
         cartService.addItemToCart(productId);
         model.addAttribute("products", cartService.getAllProducts());
+
+        Long restaurantId = (Long) session.getAttribute("restaurantId");
+        Integer selectedTable = (Integer) session.getAttribute("selectedTable");
+
+        model.addAttribute("restaurantId", restaurantId);
+        model.addAttribute("selectedTable", selectedTable);
         return "user/order/products";
     }
 
-
+// function without session for adding selectedtable and restaurantid
 //    @GetMapping("/add/{productId}")
 //    public String addItemToCart(@PathVariable("productId") Long itemId, Model model){
 //        Optional<Product> oProduct = productService.findById(itemId);

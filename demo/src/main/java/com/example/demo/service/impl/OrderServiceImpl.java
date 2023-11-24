@@ -5,10 +5,12 @@ import com.example.demo.OrderMapper;
 import com.example.demo.dto.OrderDto;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.OrderItem;
+import com.example.demo.entity.Restaurant;
 import com.example.demo.entity.User;
 import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.service.OrderService;
+import com.example.demo.service.RestaurantService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,16 +26,20 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemRepository orderItemRepository;
     private final Cart cart;
 
+    private final RestaurantService restaurantService;
+
     private final UserService userService;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, Cart cart, UserService userService) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, Cart cart, RestaurantService restaurantService, UserService userService) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.cart = cart;
+        this.restaurantService = restaurantService;
         this.userService = userService;
     }
 
+    // Save order without user, restaurant and table
 //    @Override
 //    public void saveOrder(OrderDto orderDto){
 //        Order order = OrderMapper.mapToOrder(orderDto);
@@ -43,29 +49,25 @@ public class OrderServiceImpl implements OrderService {
 //    }
 public void saveOrder(OrderDto orderDto) {
     Order order = OrderMapper.mapToOrder(orderDto);
-
-    // Retrieve the User object based on the user ID
     User user = userService.findById(orderDto.getUserId());
-
-    // Set the User in the Order entity
     order.setUser(user);
 
-    // Convert and save order items
     List<OrderItem> orderItems = OrderMapper.mapToOrderItemList(cart, order);
     order.setOrderItems(orderItems);
+
+    Restaurant restaurant = restaurantService.findById(orderDto.getRestaurantId());
+    order.setRestaurant(restaurant);
+    order.setTableNumber(orderDto.getTableNumber());
+
 
     System.out.println("Order before save: " + order);
     System.out.println("OrderItems before save: " + orderItems);
 
-
-    // Save the order
     orderRepository.save(order);
 
     System.out.println("Order after save: " + order);
     System.out.println("OrderItems after save: " + orderItems);
 
-
-    // Clear the cart after order is saved
     cart.clearCart();
 }
 

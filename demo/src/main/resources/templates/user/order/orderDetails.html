@@ -65,8 +65,11 @@
   <p>Total Sum in Cart: <span th:text="${totalSumInCart}"></span> zł</p>
 
   <p>ID: <span th:text="${order.orderId}"></span></p>
-  <p>Created: <span th:text="${order.created}"></span></p>
-<!--  <p>Username: <span th:text="${order.user.username}"></span></p>-->
+  <p>Created: <span th:text="${#temporals.format(order.created, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+  <p>Restaurant:  <span th:text="${order.restaurant.name}"></span></p>
+  <p>Table nr: <span th:text="${order.tableNumber}"></span></p>
+
+  <!--  <p>Created: <span th:text="${order.created}"></span></p>-->
 
   <table>
     <tr>

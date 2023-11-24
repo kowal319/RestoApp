@@ -64,8 +64,15 @@
 <body>
 <div th:replace="user/fragments/header ::navbar"></div>
 <br />
+
+
 <div class="main-content">
-    <!-- Confirmation Content -->
+    <div class="card">
+        <div class="card-body">
+            <p>Selected Restaurant ID: <span th:text="${restaurantId}"></span></p>
+            <p>Selected Table <span th:text="${selectedTable}"></span></p>
+        </div>
+    </div>
     <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
 
         <table cellspacing="0">

@@ -53,14 +53,16 @@
     <thead>
     <tr>
       <th>Order ID</th>
+      <th>Username</th>
       <th>Date</th>
-      <th></th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="order : ${orders}">
       <td th:text="${order.orderId}"></td>
-      <td th:text="${order.created}"></td>
+      <td th:text="${order.user.username}"></td>
+      <td th:text="${#temporals.format(order.created, 'yyyy-MM-dd HH:mm:ss')}"></td>
       <td>
         <a th:href="@{/order/admin/orderDetails/{id}(id=${order.orderId})}">
           <button type="button" class="btn btn-info">Info</button>

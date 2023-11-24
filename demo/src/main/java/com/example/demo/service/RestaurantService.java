@@ -13,7 +13,10 @@ public interface RestaurantService {
     Restaurant updateRestaurant(Long id, Restaurant updateRestaurant);
 
 
-    void increaseTables(Long id);
+//    void increaseTables(Long id);
+//
+//    void decreaseTables(Long id);
 
-    void decreaseTables(Long id);
+
+    List<Integer> tablesList(Long restaurantId);
 }

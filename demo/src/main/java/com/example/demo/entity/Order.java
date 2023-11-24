@@ -32,6 +32,11 @@ public class Order {
     @JoinColumn(name = "orderId")
     private List<OrderItem> orderItems;
 
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
+    private Restaurant restaurant;
 
-
+    @Column(name = "table_number")
+    private Integer tableNumber;
 }
+

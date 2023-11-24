@@ -6,6 +6,8 @@ import com.example.demo.service.RestaurantService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -61,24 +63,62 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
     }
 
-    @Override
-    public void increaseTables(Long id) {
-        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
-        optionalRestaurant.ifPresent(restaurant -> {
-            restaurant.setTableCount(restaurant.getTableCount() + 1);
-            restaurantRepository.save(restaurant);
-        });
+//    @Override
+//    public void increaseTables(Long id) {
+//        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
+//        optionalRestaurant.ifPresent(restaurant -> {
+//            restaurant.setTableCount(restaurant.getTableCount() + 1);
+//            restaurantRepository.save(restaurant);
+//        });
+//    }
+//
+//    @Override
+//    public void decreaseTables(Long id) {
+//        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
+//        optionalRestaurant.ifPresent(restaurant -> {
+//            int currentTableCount = restaurant.getTableCount();
+//            if (currentTableCount > 0) {
+//                restaurant.setTableCount(currentTableCount - 1);
+//                restaurantRepository.save(restaurant);
+//            }
+//        });
+//    }
+
+
+    //table selection added
+//    @Override
+//    public List<Integer> getAvailableTables(Long restaurantId) {
+//// Add debugging information
+//        System.out.println("Fetching available tables for restaurantId: " + restaurantId);
+//
+//        // Replace this with your actual logic to get available tables
+//        List<Integer> availableTables = restaurantRepository.getTableNumbersByRestaurantId(restaurantId);// Your logic here;
+//
+//                // Print the result
+//                System.out.println("Available tables: " + availableTables);
+//
+//        return availableTables;
+//    }
+
+    public List<Integer> generateTableNumbers(int tableCount) {
+        List<Integer> tableNumbers = new ArrayList<>();
+        for (int i = 1; i <= tableCount; i++) {
+            tableNumbers.add(i);
+        }
+        return tableNumbers;
     }
 
     @Override
-    public void decreaseTables(Long id) {
-        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
-        optionalRestaurant.ifPresent(restaurant -> {
-            int currentTableCount = restaurant.getTableCount();
-            if (currentTableCount > 0) {
-                restaurant.setTableCount(currentTableCount - 1);
-                restaurantRepository.save(restaurant);
-            }
-        });
+    public List<Integer> tablesList(Long restaurantId) {
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restaurantId);
+        if (optionalRestaurant.isPresent()) {
+            int tablesNum = optionalRestaurant.get().getTableCount();
+
+            System.out.println("Fetching available tables for restaurantId: " + restaurantId);
+            System.out.println("Available tables: " + tablesNum);
+            return generateTableNumbers(tablesNum);
+        }
+        return Collections.emptyList(); // Handle the case when the restaurant is not found
     }
-}
+
+    }
