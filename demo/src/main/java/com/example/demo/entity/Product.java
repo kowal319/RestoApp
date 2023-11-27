@@ -28,4 +28,8 @@ public class Product {
 
     @Column(name = "price", precision = 8, scale = 2) // Set precision and scale as needed
     private double price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

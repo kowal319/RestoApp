@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Category;
 import com.example.demo.entity.Product;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface ProductService {
     String getProductNameById(Long id);
 
     double getProductPriceById(Long itemId);
+
+    List<Category> getAllCategories();
+
+    List<Product> getProductsByCategory(Long categoryId);
 }

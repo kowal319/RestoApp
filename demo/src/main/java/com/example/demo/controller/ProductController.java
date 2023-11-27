@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.Cart;
 import com.example.demo.dto.OrderDto;
+import com.example.demo.entity.Category;
 import com.example.demo.entity.Product;
 import com.example.demo.service.CartService;
 import com.example.demo.service.ProductService;
@@ -42,6 +43,8 @@ public class ProductController {
 @GetMapping()
 public String viewAllProducts(Model model, HttpSession session) {
     List<Product> products = productService.findAllProducts();
+    List<Category> categories = productService.getAllCategories();
+
 
     // Retrieve restaurant and table information from the session
     Long restaurantId = (Long) session.getAttribute("restaurantId");
@@ -50,6 +53,7 @@ public String viewAllProducts(Model model, HttpSession session) {
     model.addAttribute("products", products);
     model.addAttribute("restaurantId", restaurantId);
     model.addAttribute("selectedTable", selectedTable);
+    model.addAttribute("categories", categories);
 
     System.out.println("restaurantId in controller: " + restaurantId);
     System.out.println("selectedTable in controller: " + selectedTable);
@@ -113,6 +117,7 @@ public String viewAllProducts(Model model, HttpSession session) {
     @GetMapping("/addProduct/{productId}")
     public String addItemToCart(@PathVariable("productId") Long productId, Model model, OrderDto orderDto, HttpSession session){
         cartService.addItemToCart(productId);
+        List<Category> categories = productService.getAllCategories();
         model.addAttribute("products", cartService.getAllProducts());
 
         Long restaurantId = (Long) session.getAttribute("restaurantId");
@@ -120,6 +125,7 @@ public String viewAllProducts(Model model, HttpSession session) {
 
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("selectedTable", selectedTable);
+        model.addAttribute("categories", categories);
         return "user/order/products";
     }
 

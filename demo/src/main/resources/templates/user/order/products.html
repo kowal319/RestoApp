@@ -13,8 +13,9 @@
             padding: 0;
             background-color: #000000;
             background-image: url('/img/tlo.jpg');
-            background-size: cover;  /* Add this line */
-    background-position: center; /* Center the background image */
+            background-size: cover;
+            background-position: center;
+            color: white;
         }
 
         header {
@@ -45,7 +46,7 @@
 
         .card {
             width: 100%;
-            border: none
+            border: none;
         }
 
         .card img {
@@ -57,6 +58,18 @@
             padding: 20px;
             width: 70%;
             flex: 1;
+        }
+
+        .category-name {
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .category-description {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
         }
 
         .product-name {
@@ -74,106 +87,190 @@
             color: #007bff;
         }
 
-.add-to-cart-btn {
-    width: 50px;
-    height: 140px;
-    background-color: #FFA500;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+        .add-to-cart-btn {
+            width: 50px;
+            height: 140px;
+            background-color: #FFA500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .add-to-cart-btn a {
+            display: block;
+            width: 90px;
+            height: 90px;
+            background-color: #FFA500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 90px;
+            font-size: 18px;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+
+        .koszyk-container {
+            text-align: right;
+            margin: 20px;
+        }
+
+        .koszyk {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .koszyk-label {
+            font-weight: bold;
+        }
+
+        .cart-counter,
+        .cart-sum {
+            font-weight: bold;
+            margin: 0 5px;
+        }
+
+        .currency {
+            font-weight: normal;
+        }
+
+        .navbar {
+            background-color: #FFA500; /* Change this to your desired background color */
+            color: white;
+            padding: 20px;
+        }
+
+        .category-nav {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    margin-top: 10px;
-}
-
-.add-to-cart-btn a {
-    display: block; /* Make the anchor a block-level element */
-    width: 90px; /* Set a fixed width */
-    height: 90px; /* Set a fixed height */
-    background-color: #FFA500; /* Change this to your desired orange color */
-    color: white;
-    border: none;
+    justify-content: space-between;
+    margin-left: 20px;
+    background-color: #343a40; /* Dark background color */
     border-radius: 5px;
-    cursor: pointer;
-    text-align: center; /* Center the text horizontally */
-    line-height: 90px; /* Center the text vertically */
-    font-size: 18px; /* Adjust the font size as needed */
-    margin-top: 10px; /* Add margin to separate the button from the card-body */
-    text-decoration: none; /* Remove the default underline for anchor tags */
-}
-
-.koszyk-container {
-    text-align: right;
-    margin: 20px;
-}
-
-.koszyk {
-    display: inline-block;
-    background-color: #007bff;
-    color: white;
     padding: 10px;
-    border-radius: 5px;
 }
 
-.koszyk-label {
-    font-weight: bold;
+.category-tab {
+    cursor: pointer;
+    text-decoration: none;
+    color: #ffffff; /* White text color */
+    padding: 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s;
 }
 
-.cart-counter, .cart-sum {
-    font-weight: bold;
-    margin: 0 5px;
+.category-tab:hover {
+    background-color: #555d65; /* Slightly darker background color on hover */
 }
 
-.currency {
-    font-weight: normal;
-}
-
+ .cart-view-button {
+        position: absolute;
+        bottom: 10px; /* Adjust the bottom spacing as needed */
+        right: 10px; /* Adjust the right spacing as needed */
+    }
     </style>
 </head>
-<div th:replace="user/fragments/header ::header"></div>
+
 <body>
+<div th:replace="user/fragments/header ::header"></div>
 <div th:replace="user/fragments/header ::navbar"></div>
-<br />
 
-<div class="koszyk-container">
-    <a th:href="@{/order/cart}" class="cart-link">
-        <div class="koszyk">
-            <span class="koszyk-label">Koszyk (</span>
-            <span class="cart-counter" th:text="${@cart.counter}"></span>
-            <span>)</span>
-            <span class="cart-sum" th:text="${@cart.sum}"></span>
-            <span class="currency">zl</span>
-        </div>
-    </a>
+<div class="category-nav">
+    <span th:each="category : ${categories}" class="category-tab">
+        <a th:href="${'#category-' + category.name}" th:text="${category.name}"></a>
+    </span>
 </div>
 
+<!--<div class="card">-->
+<!--    <div class="card-body">-->
+<!--        <p>Selected Restaurant ID: <span th:text="${restaurantId}"></span></p>-->
+<!--        <p>Selected Table <span th:text="${selectedTable}"></span></p>-->
+<!--    </div>-->
+<!--</div>-->
 
-<div class="card">
-    <div class="card-body">
-        <p>Selected Restaurant ID: <span th:text="${restaurantId}"></span></p>
-        <p>Selected Table <span th:text="${selectedTable}"></span></p>
-    </div>
-</div>
+<!--<div class="koszyk-container">-->
+<!--    <a th:href="@{/order/cart}" class="cart-link">-->
+<!--        <div class="koszyk">-->
+<!--            <span class="koszyk-label">Koszyk (</span>-->
+<!--            <span class="cart-counter" th:text="${@cart.counter}"></span>-->
+<!--            <span>)</span>-->
+<!--            <span class="cart-sum" th:text="${@cart.sum}"></span>-->
+<!--            <span class="currency">zl</span>-->
+<!--        </div>-->
+<!--    </a>-->
+<!--</div>-->
 
-
-
-
-<div th:each="product : ${products}" class="card-container">
+<div class="card-container">
     <div class="card">
-        <div class="card-body">
-            <h5 class="card-title product-name" th:text="${product.name}"></h5>
-            <p class="card-text product-description" th:text="${product.description}"></p>
-            <p class="card-text product-price" th:text="${product.price} + ' zł'"></p>
+        <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+            <!-- Left side for Restaurant ID and Table -->
+            <div>
+                <h5 class="card-title">Selected Restaurant and Table</h5>
+                <p>Restaurant ID: <span th:text="${restaurantId}"></span></p>
+                <p>Table: <span th:text="${selectedTable}"></span></p>
+                <hr> <!-- Horizontal line for separation -->
+            </div>
+
+            <!-- Right side for Koszyk info and button -->
+            <div style="text-align: right;">
+                <!-- Koszyk info in one line -->
+                <div class="koszyk-info" style="display: inline-block; text-align: right;">
+                    <p class="koszyk-label" style="display: inline;">Koszyk (</p>
+                    <span class="cart-counter" th:text="${@cart.counter}"></span>
+                    <span>)</span>
+                    <span class="cart-sum" th:text="${@cart.sum}"></span>
+                    <span class="currency">zl</span>
+                </div>
+
+                <!-- Button for "Cart View" on the right bottom -->
+                <div class="cart-view-button" style="margin-top: 10px;">
+                    <form th:action="@{/order/cart}" method="get">
+                        <button type="submit" class="btn btn-primary">Cart View</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="add-to-cart-btn">
-        <a th:href="@{/products/addProduct/{productId}(productId=${product.id})}" class="add-btn">+</a>
     </div>
 </div>
 
+
+
+<li th:each="category : ${categories}">
+    <div class="card-container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title category-name" th:text="${category.name}"></h5>
+            </div>
+        </div>
+    </div>
+        <ul>
+            <div th:each="product : ${category.products}" class="card-container">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title product-name" th:text="${product.name}"></h5>
+                        <p class="card-text product-description" th:text="${product.description}"></p>
+                        <p class="card-text product-price" th:text="${product.price} + ' zł'"></p>
+                    </div>
+                </div>
+                <div class="add-to-cart-btn">
+                    <a th:href="@{/products/addProduct/{productId}(productId=${product.id})}"
+                       class="add-btn">+</a>
+                </div>
+            </div>
+        </ul>
+    </div>
+</li>
+
 </body>
-</body>
+
 </html>
