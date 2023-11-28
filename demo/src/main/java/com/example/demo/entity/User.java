@@ -38,6 +38,10 @@ public class User {
     private String phone;
 
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "credit_card_id", referencedColumnName = "id")
+    private CreditCard creditCard;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
@@ -45,6 +49,8 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Set<Role> roles = new HashSet<>();
+
+
 
 
 }

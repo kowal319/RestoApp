@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dto.ChangePasswordDTO;
 import com.example.demo.dto.RegistrationDto;
+import com.example.demo.entity.CreditCard;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.repository.RoleRepository;
@@ -160,6 +161,13 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("Invalid old password or new password confirmation.");
         }
+    }
+
+
+    @Override
+    public void addCreditCard(User user, CreditCard creditCard) {
+        user.setCreditCard(creditCard);
+        userRepository.save(user);
     }
 
 }

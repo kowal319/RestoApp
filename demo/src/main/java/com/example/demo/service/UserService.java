@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ChangePasswordDTO;
 import com.example.demo.dto.RegistrationDto;
+import com.example.demo.entity.CreditCard;
 import com.example.demo.entity.User;
 import org.springframework.security.core.Authentication;
 
@@ -30,4 +31,5 @@ public interface UserService {
 
     void changePassword(Long userId, ChangePasswordDTO changePasswordDTO);
 
+    void addCreditCard(User user, CreditCard creditCard);
 }
