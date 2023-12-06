@@ -38,5 +38,13 @@ public class Order {
 
     @Column(name = "table_number")
     private Integer tableNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "payment_method_id", referencedColumnName = "id")
+    private PaymentMethod paymentMethod;
+
+    @Column(name = "total_price")
+    private Double totalPrice;
 }
+
 

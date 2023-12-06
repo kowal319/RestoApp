@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>User List</title>
+  <title>Customer List</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
@@ -45,17 +45,14 @@
     </style>
 </head>
 
+<body>
 <div th:replace="admin/fragments/admin-header ::header"></div>
 
-<body>
 <div th:replace="admin/fragments/admin-header ::navbar"></div>
-<br />
+<br/>
 
-<h1>User List</h1>
-<a th:href="@{/users/addUser}" class="btn btn-primary">Add User</a>
-
-
-
+<h1>Customer List</h1>
+<a th:href="@{/users/addCustomer}" class="btn btn-primary">Add Customer</a>
 
 <table class="table table-bordered table-striped">
   <thead>
@@ -64,27 +61,21 @@
     <th>Last Name</th>
     <th>Email</th>
     <th>Phone</th>
-    <th>Roles</th>
     <th>Actions</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="user : ${users}">
-    <td th:text="${user.firstName}"></td>
-    <td th:text="${user.lastName}"></td>
-    <td th:text="${user.username}"></td>
-    <td th:text="${user.phone}"></td>
-    <td>
-      <ul>
-        <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
-      </ul>
-    </td>
+  <tr th:each="customer : ${customers}">
+    <td th:text="${customer.firstName}"></td>
+    <td th:text="${customer.lastName}"></td>
+    <td th:text="${customer.username}"></td>
+    <td th:text="${customer.phone}"></td>
     <td>
       <div class="actions">
-        <a th:href="@{users/editUser/{id}(id=${user.id})}" class="btn btn-primary">Edit</a>
-        <a th:href="@{users/deleteUser/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
-        <a th:href="@{users/userOrders/{id}(id=${user.id})}" class="btn btn-info">User Orders</a>
-      </div>
+        <a th:href="@{users/editUser/{id}(id=${customer.id})}" class="btn btn-primary">Edit</a>
+        <a th:href="@{users/deleteUser/{id}(id=${customer.id})}" class="btn btn-danger">Delete</a>
+        <a th:href="@{/users/{id}/orders(id=${customer.id})}" class="user-orders-link">User Orders</a>
+       </div>
     </td>
   </tr>
   </tbody>

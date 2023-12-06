@@ -19,12 +19,13 @@
 
         .card-container {
             display: flex;
+            justify-content: center;
             justify-content: space-between;
             margin-bottom: 20px;
         }
 
         .card {
-            width: 48%;
+            width: 100%;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -50,6 +51,8 @@
 <br />
 
 <!-- User Details Card -->
+<div class="container">
+  <div class="card-container">
 <div class="card">
   <h5>Order History</h5>
   <table class="table table-bordered table-striped">
@@ -59,6 +62,7 @@
       <th>Date</th>
       <th>Restaurant name</th>
       <th>Table number</th>
+      <th>Payment Method</th>
       <th></th>
     </tr>
     </thead>
@@ -70,6 +74,8 @@
       <td th:text="${order.restaurant?.name}"></td>
 
       <td th:text="${order.tableNumber}"></td>
+      <td th:text="${order.paymentMethod?.name}"></td>
+
       <td>
         <a th:href="@{/order/orderDetails/{id}(id=${order.orderId})}">
           <button type="button" class="btn btn-info">Info</button>
@@ -80,6 +86,8 @@
   </table>
 </div>
 </div>
+</div>
+
 
   <!-- Add your scripts and other body elements here -->
 

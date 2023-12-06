@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.OrderDto;
+import com.example.demo.entity.CreditCard;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
 import org.springframework.security.core.Authentication;
@@ -19,5 +20,11 @@ public interface OrderService {
 
     List<Order> findOrdersByCurrentUser(Authentication authentication);
 
+    CreditCard findCreditCardByOrderId(Long orderId);
+
     Double getTotalSumInCart(Long orderId);
+
+    List<Order> findOrdersByUserId(Long userId);
+
+    Double calculateTotalPriceByOrderId(Long orderId);
 }

@@ -2,12 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Add User</title>
+    <title>Edit Category</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
     <style>
         body {
+            background-image: url('/img/tlo.jpg');
             background-size: cover;
             background-position: center;
             font-family: 'Arial', sans-serif;
@@ -45,42 +46,20 @@
         }
     </style>
 </head>
-
 <div th:replace="admin/fragments/admin-header ::header"></div>
 
 <body>
 <div th:replace="admin/fragments/admin-header ::navbar"></div>
 <br />
 
-<form th:action="@{/users/save}" method="post">
-    <h1>Add New User</h1>
+<form th:action="@{/category/editCategory/{id}(id=${category.id})}" method="post">
     <div class="form-group">
-        <label for="firstName">First Name:</label>
-        <input type="text" class="form-control" id="firstName" name="firstName" required="required" />
+        <h1>Edit Category</h1>
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" required="required" th:value="${category.name}" />
     </div>
-    <div class="form-group">
-        <label for="lastName">Last Name:</label>
-        <input type="text" class="form-control" id="lastName" name="lastName" required="required" />
-    </div>
-    <div class="form-group">
-        <label for="username">Email:</label>
-        <textarea class="form-control" id="username" name="username" required="required"></textarea>
-    </div>
-    <div class="form-group">
-        <label for="phone">Phone Number:</label>
-        <textarea class="form-control" id="phone" name="phone" required="required"></textarea>
-    </div>
-    <div class="form-group">
-        <label for="birth">Date of Birth:</label>
-        <input type="text" class="form-control" id="birth" name="birth" required="required" />
-    </div>
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" class="form-control" id="password" name="password" required="required" />
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a th:href="@{/users}" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a th:href="@{/category}" class="btn btn-secondary">Cancel</a>
 </form>
 </body>
-
 </html>

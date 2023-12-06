@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.dto.ChangePasswordDTO;
 import com.example.demo.dto.RegistrationDto;
 import com.example.demo.entity.CreditCard;
+import com.example.demo.entity.Order;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.repository.RoleRepository;
@@ -168,6 +169,30 @@ public class UserServiceImpl implements UserService {
     public void addCreditCard(User user, CreditCard creditCard) {
         user.setCreditCard(creditCard);
         userRepository.save(user);
+    }
+
+    @Override
+    public List<User> findUsersByRole(String roleName) {
+        return userRepository.findByRoles_Name(roleName);
+    }
+
+    @Override
+    public User saveUserWithRole(User user, String roleName) {
+        // Create the user
+        User savedUser = createUser(user);
+
+        // Find the role by name
+        Role role = roleRepository.findByName(roleName);
+
+        // Add the role to the user
+        if (role != null) {
+            savedUser.getRoles().add(role);
+            userRepository.save(savedUser);
+        } else {
+            throw new IllegalArgumentException("Role not found: " + roleName);
+        }
+
+        return savedUser;
     }
 
 }

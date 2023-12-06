@@ -218,6 +218,7 @@
                 <h5 class="card-title">Selected Restaurant and Table</h5>
                 <p>Restaurant ID: <span th:text="${restaurantId}"></span></p>
                 <p>Table: <span th:text="${selectedTable}"></span></p>
+
                 <hr> <!-- Horizontal line for separation -->
             </div>
 
@@ -243,6 +244,10 @@
     </div>
 </div>
 
+<div>
+    <!-- Display the selected payment method -->
+    <p>Selected Payment Method ID: <span th:text="${paymentMethodId}"></span></p>
+</div>
 
 
 <li th:each="category : ${categories}">

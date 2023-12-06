@@ -15,5 +15,8 @@ private Long userId;
     private Long restaurantId;
     private Integer tableNumber;
 
+    private Long paymentMethodId;
+
+
 }
 

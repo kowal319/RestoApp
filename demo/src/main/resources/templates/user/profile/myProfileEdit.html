@@ -1,34 +1,70 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Edit User</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url('/img/tlo.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<style>
-body{
-                background-image: url('/img/tlo.jpg');
-            background-size: cover;  /* Add this line */
-    background-position: center; /* Center the background image */
-    }
-</style>
+        h1 {
+            color: #007bff;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-secondary {
+            margin-left: 10px;
+        }
+
+    </style>
 </head>
+
 <body>
 <h1>Edit User</h1>
 <form th:action="@{/users/myProfileEdit/{id}(id=${user.id})}" method="post">
     <div class="form-group">
-        <label for="FirstName">FirstName:</label>
+        <label for="FirstName">First Name:</label>
         <input type="text" class="form-control" id="FirstName" name="FirstName" required="required" th:value="${user.firstName}" />
     </div>
     <div class="form-group">
-        <label for="LastName">LastName:</label>
+        <label for="LastName">Last Name:</label>
         <input type="text" class="form-control" id="LastName" name="LastName" th:value="${user.lastName}" />
     </div>
     <div class="form-group">
-        <label for="username">email:</label>
+        <label for="username">Email:</label>
         <input type="text" class="form-control" id="username" name="username" th:value="${user.username}" />
     </div>
     <div class="form-group">
-        <label for="phone">phone:</label>
+        <label for="phone">Phone:</label>
         <input type="text" class="form-control" id="phone" name="phone" th:value="${user.phone}" />
     </div>
 
@@ -36,4 +72,5 @@ body{
     <a th:href="@{/users/profile}" class="btn btn-secondary">Cancel</a>
 </form>
 </body>
+
 </html>

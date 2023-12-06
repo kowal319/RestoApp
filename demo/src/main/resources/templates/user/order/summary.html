@@ -74,6 +74,8 @@
         <div class="card-body">
             <p>Selected Restaurant ID: <span th:text="${restaurantId}"></span></p>
             <p>Selected Table <span th:text="${selectedTable}"></span></p>
+            <p>Selected Payment Method: <span th:text="${selectedPaymentMethodName}"></span></p>
+
         </div>
     </div>
     <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
@@ -95,6 +97,10 @@
         <div class="summary">
             <p><span>Total Amount</span><span th:text="${@cart.sum}"></span>zł</p>
         </div>
+
+        <p><span>Payment Method:</span><span th:text="${paymentMethod}"></span></p>
+
+
 
         <!-- Place Order Button -->
         <form th:action="@{/order/saveorder}" method="post">

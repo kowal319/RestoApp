@@ -65,11 +65,24 @@
 
   <p>Total Sum in Cart: <span th:text="${totalSumInCart}"></span> zł</p>
 
-  <p>ID: <span th:text="${order.orderId}"></span></p>
+  <p>Order Number: <span th:text="${order.orderId}"></span></p>
   <p>Created: <span th:text="${#temporals.format(order.created, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
     <p>Username: <span th:text="${order.user.username}"></span></p>
   <p>Restaurant:  <span th:text="${order.restaurant.name}"></span></p>
   <p>Table nr: <span th:text="${order.tableNumber}"></span></p>
+  <!-- Check if paymentMethod is Card Online -->
+  <td th:if="${order.paymentMethod != null && order.paymentMethod.name eq 'Card Online'}">
+    <span th:text="${order.paymentMethod.name}"></span>
+    <!-- Display the button and link it to the user's card details page -->
+    <a th:href="@{/order/admin/orderDetails/{id}/cardDetails(id=${order.orderId})}" class="btn btn-info">Check Card Details</a>
+  </td>
+  <!-- If paymentMethod is not Card Online, just display the text -->
+  <td th:if="${order.paymentMethod != null && order.paymentMethod.name ne 'Card Online'}" th:text="${order.paymentMethod.name}"></td>
+  <!-- If paymentMethod is null, display some default text or handle it as needed -->
+  <td th:if="${order.paymentMethod == null}">N/A</td>
+
+
+
 
   <table>
     <tr>

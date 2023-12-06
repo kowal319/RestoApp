@@ -39,20 +39,13 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     public void deleteCreditCard(Long id) {
-        // Find the credit card by ID
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(id);
 
         if (optionalCreditCard.isPresent()) {
             CreditCard creditCard = optionalCreditCard.get();
-
-            // Remove the credit card from the user entity
             User user = creditCard.getUser();
-            user.setCreditCard(null); // Assuming 'creditCard' is the field name in the User entity
-
-            // Save the user entity to update the relationship
+            user.setCreditCard(null);
             userRepository.save(user);
-
-            // Delete the credit card
             creditCardRepository.deleteById(id);
         }
     }

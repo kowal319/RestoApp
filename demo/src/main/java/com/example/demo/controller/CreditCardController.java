@@ -5,6 +5,7 @@ import com.example.demo.entity.CreditCard;
 import com.example.demo.entity.User;
 import com.example.demo.service.CreditCardService;
 import com.example.demo.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -23,27 +24,6 @@ public class CreditCardController {
         this.creditCardService = creditCardService;
     this.userService = userService;
 }
-
-
-    @GetMapping("/cart")
-    public String viewPaymentPage(Model model) {
-        // Add necessary model attributes
-        return "user/order/cartView";
-    }
-
-    @PostMapping("/process")
-    public String processPayment(@RequestParam("paymentMethod") String paymentMethod, Model model) {
-        // Process the selected payment method
-        // Check user's profile for credit card details and navigate accordingly
-        return "redirect:/payment/success";
-    }
-
-    @GetMapping("/success")
-    public String paymentSuccess(Model model) {
-        // Display a success message or receipt
-        return "payment/success";
-    }
-
 
     @GetMapping("/users/profile/userCardDetails")
     public String viewCardDetails(Model model, Authentication authentication) {
@@ -81,6 +61,7 @@ public class CreditCardController {
         creditCardService.deleteCreditCard(id);
     return "redirect:/users/profile/userCardDetails";
     }
+
 
 }
 

@@ -45,18 +45,29 @@ public String viewAllProducts(Model model, HttpSession session) {
     List<Product> products = productService.findAllProducts();
     List<Category> categories = productService.getAllCategories();
 
-
-    // Retrieve restaurant and table information from the session
     Long restaurantId = (Long) session.getAttribute("restaurantId");
     Integer selectedTable = (Integer) session.getAttribute("selectedTable");
+
 
     model.addAttribute("products", products);
     model.addAttribute("restaurantId", restaurantId);
     model.addAttribute("selectedTable", selectedTable);
     model.addAttribute("categories", categories);
 
+
     System.out.println("restaurantId in controller: " + restaurantId);
     System.out.println("selectedTable in controller: " + selectedTable);
+
+    Long paymentMethodId = (Long) session.getAttribute("paymentMethodId"); // Retrieve paymentMethodId
+    System.out.println("Retrieved Payment Method ID from session: " + paymentMethodId);
+
+    model.addAttribute("paymentMethodId", paymentMethodId); // Add paymentMethodId to the model
+
+    String selectedPaymentMethodName = (String) session.getAttribute("selectedPaymentMethodName");
+
+    // Add the selected payment method name to the model
+    model.addAttribute("selectedPaymentMethodName", selectedPaymentMethodName);
+
 
     return "user/order/products";
 }
@@ -78,6 +89,8 @@ public String viewAllProducts(Model model, HttpSession session) {
     @GetMapping("/newProduct")
     public String showAddProductPage(Model model) {
         model.addAttribute("product", new Product());
+        model.addAttribute("categories", productService.getAllCategories());
+
         return "admin/product/add-product";
     }
 
@@ -103,6 +116,8 @@ public String viewAllProducts(Model model, HttpSession session) {
     public String editProductForm(@PathVariable Long id, Model model) {
         Product product = productService.findById(id);
         model.addAttribute("product", product);
+        model.addAttribute("categories", productService.getAllCategories());
+
         return "admin/product/edit-product"; // Create an "edit-product.html" template
     }
 
@@ -129,15 +144,6 @@ public String viewAllProducts(Model model, HttpSession session) {
         return "user/order/products";
     }
 
-// function without session for adding selectedtable and restaurantid
-//    @GetMapping("/add/{productId}")
-//    public String addItemToCart(@PathVariable("productId") Long itemId, Model model){
-//        Optional<Product> oProduct = productService.findById(itemId);
-//        if(oProduct.isPresent()){
-//            Product product = oProduct.get();
-//            cart.addProduct(product);
-//        }
-//        model.addAttribute("products", productService.findAllProducts());
-//        return "products";
-//    }
+
+
 }

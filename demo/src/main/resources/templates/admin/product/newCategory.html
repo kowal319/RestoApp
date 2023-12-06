@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Add Product</title>
+  <title>Add Category</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
@@ -52,29 +52,15 @@
 <div th:replace="admin/fragments/admin-header ::navbar"></div>
 <br />
 
-<h1>Edit Product</h1>
-<form th:action="@{/products/editProduct/{id}(id=${product.id})}" method="post">
+<h1>Add Product</h1>
+<form th:action="@{/category/save}" method="post">
   <div class="form-group">
     <label for="name">Name:</label>
-    <input type="text" class="form-control" id="name" name="name" required="required" th:value="${product.name}" />
+    <input type="text" class="form-control" id="name" name="name" required="required" />
   </div>
-  <div class="form-group">
-    <label for="description">Description:</label>
-    <input type="text" class="form-control" id="description" name="description" required="required" th:value="${product.description}" />
-  </div>
-  <div class="form-group">
-    <label for="price">Price:</label>
-    <input type="text" class="form-control" id="price" name="price" required="required" step="0.01" th:value="${product.price}" />
-  </div>
-  <div class="form-group">
-    <label for="category">Category:</label>
-    <select class="form-control" id="category" name="category" required="required">
-      <!-- Add Thymeleaf iteration for categories -->
-      <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Update</button>
+  <button type="submit" class="btn btn-primary">Save</button>
   <a th:href="@{/admin/productsAdmin}" class="btn btn-secondary">Cancel</a>
 </form>
 </body>
+
 </html>

@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +42,60 @@ public class UserController {
         return "admin/user/users";
     }
 
-        @PostMapping("/save")
+    @GetMapping("/customers")
+    public String showCustomerList(Model model) {
+        List<User> customers = userService.findUsersByRole("CUSTOMER");
+        model.addAttribute("customers", customers);
+        return "admin/user/customers";
+    }
+
+    @GetMapping("/employees")
+    public String showEmployeeList(Model model) {
+        List<User> employees = userService.findUsersByRole("EMPLOYEE");
+        model.addAttribute("employees", employees);
+        return "admin/user/employees";
+    }
+
+    @GetMapping("/addEmployee")
+    public String showAddEmployeeForm(Model model) {
+        // populate the model as needed
+        model.addAttribute("user", new User());
+        return "admin/user/addEmployee"; // adjust the template name accordingly
+    }
+
+    @PostMapping("/addEmployee")
+    public String addEmployee(@ModelAttribute("user") User user, BindingResult result) {
+        // add logic to save the user with the "EMPLOYEE" role
+        userService.saveUserWithRole(user, "EMPLOYEE");
+        return "redirect:/users/employees"; // redirect to the employee list page
+    }
+    @GetMapping("/addCustomer")
+    public String showAddCustomerForm(Model model) {
+        // populate the model as needed
+        model.addAttribute("customer", new User());
+        return "admin/user/addCustomer"; // adjust the template name accordingly
+    }
+
+    @PostMapping("/addCustomer")
+    public String addCustomer(@ModelAttribute("customer") User user, BindingResult result) {
+        // add logic to save the user with the "EMPLOYEE" role
+        userService.saveUserWithRole(user, "CUSTOMER");
+        return "redirect:/users/customers"; // redirect to the employee list page
+    }
+
+    @GetMapping("/{id}/orders")
+    public String showUserOrders(@PathVariable Long id, Model model) {
+        List<Order> userOrders = orderService.findOrdersByUserId(id);
+
+        userOrders.forEach(order -> {
+            Double totalPrice = orderService.calculateTotalPriceByOrderId(order.getOrderId());
+            order.setTotalPrice(totalPrice != null ? totalPrice : 0.0);
+        });
+
+        model.addAttribute("userOrders", userOrders);
+        return "admin/order/userOrders";
+    }
+    @PostMapping("/save")
           public String createUser(@ModelAttribute("user") User user){
             userService.createUser(user);
             return "redirect:/users";
