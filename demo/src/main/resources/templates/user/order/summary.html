@@ -107,6 +107,9 @@
             <button type="submit" class="add-btn">Place Order</button>
         </form>
 
+        <form th:action="@{/order/proceedToPayment}" method="post">
+            <button type="submit">Proceed to Payment</button>
+        </form>
     </div>
 </div>
 </body>

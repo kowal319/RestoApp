@@ -4,6 +4,7 @@ import com.example.demo.dto.OrderDto;
 import com.example.demo.entity.CreditCard;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -27,4 +28,5 @@ public interface OrderService {
     List<Order> findOrdersByUserId(Long userId);
 
     Double calculateTotalPriceByOrderId(Long orderId);
+
 }

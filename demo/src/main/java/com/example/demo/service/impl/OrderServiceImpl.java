@@ -10,8 +10,10 @@ import com.example.demo.service.OrderService;
 import com.example.demo.service.PaymentMethodService;
 import com.example.demo.service.RestaurantService;
 import com.example.demo.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -132,5 +134,4 @@ public void saveOrder(OrderDto orderDto) {
     public Double calculateTotalPriceByOrderId(Long orderId) {
         return orderRepository.calculateTotalPriceByOrderId(orderId).orElse(0.0);
     }
-
 }

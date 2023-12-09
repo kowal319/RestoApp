@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,7 +14,13 @@ private Long userId;
     private Integer tableNumber;
 
     private Long paymentMethodId;
+    private Double totalAmount;
 
+    private String currency;  // Add this field for currency selection
+
+    private String method;
+    private String intent;
+    private String description;
 
 }
 

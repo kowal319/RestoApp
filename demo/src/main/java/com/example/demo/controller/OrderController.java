@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.Cart;
 import com.example.demo.OrderMapper;
-import com.example.demo.entity.*;
 import com.example.demo.dto.OrderDto;
+import com.example.demo.entity.*;
 import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,8 +36,16 @@ private final OrderService orderService;
     private final RestaurantService restaurantService;
 
     private final PaymentMethodService paymentMethodService;
-@Autowired
-    public OrderController(OrderService orderService, CartService cartService, UserService userService, OrderItemRepository orderItemRepository, OrderMapper orderMapper, RestaurantService restaurantService, PaymentMethodService paymentMethodService) {
+
+    @Autowired
+    private Cart cart;
+
+
+    @Autowired
+    public OrderController(OrderService orderService, CartService cartService,
+                           UserService userService, OrderItemRepository orderItemRepository,
+                           OrderMapper orderMapper, RestaurantService restaurantService,
+                           PaymentMethodService paymentMethodService) {
     this.orderService = orderService;
     this.cartService = cartService;
     this.userService = userService;
@@ -43,7 +53,8 @@ private final OrderService orderService;
     this.orderMapper = orderMapper;
     this.restaurantService = restaurantService;
     this.paymentMethodService = paymentMethodService;
-}
+
+    }
 
     @GetMapping("/cart")
     public String showCart(){
@@ -78,24 +89,16 @@ private final OrderService orderService;
         Long restaurantId = (Long) session.getAttribute("restaurantId");
         Integer selectedTable = (Integer) session.getAttribute("selectedTable");
 
+
+
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("selectedTable", selectedTable);
         model.addAttribute("selectedPaymentMethodName", selectedPaymentMethodName);
-
 
         return "user/order/summary";
     }
 
 
-//  Save order without user, restaurant id and table number
-//    @PostMapping("/saveorder")
-//    public String saveOrder(OrderDto orderDto){
-//    orderService.saveOrder(orderDto);
-//    return "redirect:/products";
-//        }
-
-
-    //class with saving order with user id, resutarntId and table number
     @PostMapping("/saveorder")
     public String saveOrder(OrderDto orderDto, HttpSession session) {
 
@@ -107,7 +110,6 @@ private final OrderService orderService;
         Integer selectedTable = (Integer) session.getAttribute("selectedTable");
         Long paymentMethodId = (Long) session.getAttribute("paymentMethodId");
 
-
         if (currentUser == null) {
             return "redirect:/error";}
 
@@ -116,7 +118,6 @@ private final OrderService orderService;
         orderDto.setRestaurantId(restaurantId);
         orderDto.setTableNumber(selectedTable);
         orderDto.setPaymentMethodId(paymentMethodId);
-
 
         orderService.saveOrder(orderDto);
         return "redirect:/order/myOrders";
@@ -220,15 +221,6 @@ private final OrderService orderService;
         return "redirect:/order/choose-restaurant";
     }
 
-//    @GetMapping("/choose-restaurant")
-//    public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long paymentMethodId,
-//                                           Model model, HttpSession session) {
-//        model.addAttribute("paymentMethodId", paymentMethodId);
-//        List<Restaurant> restaurants = restaurantService.findAllRestaurants();
-//        model.addAttribute("restaurants", restaurants);
-//        System.out.println("payment method choosen  in getMapping show restaurant form : " + paymentMethodId);
-//        return "user/order/choose-restaurant";
-//    }
 @GetMapping("/choose-restaurant")
 public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long paymentMethodId,
                                        Model model, HttpSession session) {
@@ -307,4 +299,15 @@ public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long pay
         System.out.println(" processTableSelection Selected table: " + selectedTable);
         return "redirect:/products";
     }
+
+    @PostMapping("/proceedToPayment")
+    public String proceedToPayment(Model model) {
+        // Add the cart information to the model
+
+        model.addAttribute("cart", cart);
+
+        // Return the payment confirmation page
+        return "paymentConfirmation";
+    }
+
 }

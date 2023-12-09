@@ -1,10 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,6 +9,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "payment_method")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "payment_type", discriminatorType = DiscriminatorType.STRING)
 public class PaymentMethod {
 
 
