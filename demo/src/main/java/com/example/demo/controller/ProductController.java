@@ -4,16 +4,16 @@ import com.example.demo.Cart;
 import com.example.demo.dto.OrderDto;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Product;
+import com.example.demo.entity.Restaurant;
 import com.example.demo.service.CartService;
 import com.example.demo.service.ProductService;
+import com.example.demo.service.RestaurantService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -24,12 +24,14 @@ public class ProductController {
     private final ProductService productService;
     private final Cart cart;
     private final CartService cartService;
+    private final RestaurantService restaurantService;
 
     @Autowired
-    public ProductController(ProductService productService, Cart cart, CartService cartService) {
+    public ProductController(ProductService productService, Cart cart, CartService cartService, RestaurantService restaurantService) {
         this.productService = productService;
         this.cart = cart;
         this.cartService = cartService;
+        this.restaurantService = restaurantService;
     }
 
 
@@ -55,18 +57,20 @@ public String viewAllProducts(Model model, HttpSession session) {
     model.addAttribute("categories", categories);
 
 
-    System.out.println("restaurantId in controller: " + restaurantId);
-    System.out.println("selectedTable in controller: " + selectedTable);
-
     Long paymentMethodId = (Long) session.getAttribute("paymentMethodId"); // Retrieve paymentMethodId
-    System.out.println("Retrieved Payment Method ID from session: " + paymentMethodId);
 
     model.addAttribute("paymentMethodId", paymentMethodId); // Add paymentMethodId to the model
 
     String selectedPaymentMethodName = (String) session.getAttribute("selectedPaymentMethodName");
 
+Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
+String selectedRestaurantName = selectedRestaurant.getName();
+
+    model.addAttribute("selectedRestaurantName", selectedRestaurantName);
+
     // Add the selected payment method name to the model
     model.addAttribute("selectedPaymentMethodName", selectedPaymentMethodName);
+
 
 
     return "user/order/products";

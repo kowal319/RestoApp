@@ -89,7 +89,10 @@ private final OrderService orderService;
         Long restaurantId = (Long) session.getAttribute("restaurantId");
         Integer selectedTable = (Integer) session.getAttribute("selectedTable");
 
+        Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
+        String selectedRestaurantName = selectedRestaurant.getName();
 
+        model.addAttribute("selectedRestaurantName", selectedRestaurantName);
 
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("selectedTable", selectedTable);
@@ -99,9 +102,48 @@ private final OrderService orderService;
     }
 
 
+//    @PostMapping("/saveorder")
+//    public String saveOrder(OrderDto orderDto, HttpSession session) {
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String loggedInUsername = authentication.getName();
+//
+//        User currentUser = userService.findByUsername(loggedInUsername);
+//        Long restaurantId = (Long) session.getAttribute("restaurantId");
+//        Integer selectedTable = (Integer) session.getAttribute("selectedTable");
+//        Long paymentMethodId = (Long) session.getAttribute("paymentMethodId");
+//
+//        if (currentUser == null) {
+//            return "redirect:/error";}
+//
+//        orderDto.setUserId(currentUser.getId());
+//        orderDto.setRestaurantId(restaurantId);
+//        orderDto.setTableNumber(selectedTable);
+//        orderDto.setPaymentMethodId(paymentMethodId);
+//
+//        orderService.saveOrder(orderDto);
+//        return "redirect:/order/myOrders";
+//    }
     @PostMapping("/saveorder")
     public String saveOrder(OrderDto orderDto, HttpSession session) {
+    // Common logic
+    handleOrderSave(orderDto, session);
+    return "redirect:/order/myOrders";
+}
 
+
+    @PostMapping("/savepaypal")
+    public String saveWithPaypal(OrderDto orderDto, HttpSession session) {
+    handleOrderSave(orderDto, session);
+    boolean paymentDone = true;
+        orderDto.setPaid(paymentDone);
+        System.out.println("before saving " + paymentDone);
+        orderService.saveOrder(orderDto);
+
+        return "redirect:/order/myOrders";
+    }
+
+    private void handleOrderSave(OrderDto orderDto, HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUsername = authentication.getName();
 
@@ -111,16 +153,15 @@ private final OrderService orderService;
         Long paymentMethodId = (Long) session.getAttribute("paymentMethodId");
 
         if (currentUser == null) {
-            return "redirect:/error";}
+            throw new RuntimeException("User not found"); // Or redirect to an error page
+        }
 
-        // Set the current user ID, restaurantId and tableNumber in the OrderDto
         orderDto.setUserId(currentUser.getId());
         orderDto.setRestaurantId(restaurantId);
         orderDto.setTableNumber(selectedTable);
         orderDto.setPaymentMethodId(paymentMethodId);
 
-        orderService.saveOrder(orderDto);
-        return "redirect:/order/myOrders";
+//        orderService.saveOrder(orderDto);
     }
 
     @GetMapping("/myOrders")
@@ -232,15 +273,11 @@ public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long pay
     PaymentMethod selectedPaymentMethod = paymentMethodService.findById(paymentMethodId);
 
     model.addAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
-
-    System.out.println("Payment method chosen in getMapping show restaurant form: " + selectedPaymentMethod.getName());
-
     // Save payment method name in session for later use
     session.setAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
 
     return "user/order/choose-restaurant";
 }
-
 
     @PostMapping("/choose-restaurant/{id}")
     public String processRestaurantSelection(@RequestParam("restaurantId") Long restaurantId,
@@ -248,14 +285,14 @@ public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long pay
                                              Model model,
                                              HttpSession session) {
 
-        session.setAttribute("paymentMethodId", paymentMethodId); // Set paymentMethodId in the session
-        System.out.println("Payment Method ID saved in session: " + paymentMethodId);
+        session.setAttribute("paymentMethodId", paymentMethodId);
 
         List<Integer> availableTables = restaurantService.tablesList(restaurantId);
-        System.out.println(" 111processRestaurantSelection :Number of available tables: " + availableTables.size());
 
         Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
         model.addAttribute("selectedRestaurant", selectedRestaurant);
+
+
 
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("availableTables", availableTables);
@@ -269,10 +306,8 @@ public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long pay
                                       @PathVariable Long id, Model model, HttpSession session) {
 
         Long paymentMethodId = (Long) session.getAttribute("paymentMethodId");
-        System.out.println("Retrieved Payment Method ID from session: " + paymentMethodId);
 
         model.addAttribute("paymentMethodId", paymentMethodId);
-        System.out.println("Retrieved Payment Method ID from session: " + paymentMethodId);
 
         String selectedPaymentMethodName = (String) session.getAttribute("selectedPaymentMethodName");
 
@@ -292,11 +327,9 @@ public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long pay
                                         @ModelAttribute("restaurantId") Long restaurantId,
                                         Model model, HttpSession session
                                        ) {
-         session.setAttribute("restaurantId", restaurantId);
-         session.setAttribute("selectedTable", selectedTable);
 
-        System.out.println("2222processTableSelection Selected restaurant ID: " + restaurantId);
-        System.out.println(" processTableSelection Selected table: " + selectedTable);
+        session.setAttribute("restaurantId", restaurantId);
+         session.setAttribute("selectedTable", selectedTable);
         return "redirect:/products";
     }
 

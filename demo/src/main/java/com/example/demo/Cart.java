@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +55,12 @@ public class Cart {
                 .reduce((double) 0, Double::sum);
         counter = cartItems.stream().mapToInt(CartItem::getCounter)
                 .reduce(0, (a,b) -> a + b );
+
+        BigDecimal sumDecimal = BigDecimal.valueOf(sum);
+        sumDecimal = sumDecimal.setScale(2, RoundingMode.HALF_UP);
+        sum = sumDecimal.doubleValue();
     }
+
 
     private Optional<CartItem> getCartItemByItem(Product product){
         return cartItems.stream()

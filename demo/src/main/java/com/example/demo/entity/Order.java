@@ -21,12 +21,9 @@ public class Order {
     private Long orderId;
     private LocalDateTime created;
 
-
-
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "orderId")
@@ -45,6 +42,11 @@ public class Order {
 
     @Column(name = "total_price")
     private Double totalPrice;
+
+
+    @Column(name = "paid", columnDefinition = "TINYINT(1)")
+    private boolean paid;
+
 }
 
 

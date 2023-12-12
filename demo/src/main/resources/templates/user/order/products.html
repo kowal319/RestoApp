@@ -191,34 +191,16 @@
     </span>
 </div>
 
-<!--<div class="card">-->
-<!--    <div class="card-body">-->
-<!--        <p>Selected Restaurant ID: <span th:text="${restaurantId}"></span></p>-->
-<!--        <p>Selected Table <span th:text="${selectedTable}"></span></p>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="koszyk-container">-->
-<!--    <a th:href="@{/order/cart}" class="cart-link">-->
-<!--        <div class="koszyk">-->
-<!--            <span class="koszyk-label">Koszyk (</span>-->
-<!--            <span class="cart-counter" th:text="${@cart.counter}"></span>-->
-<!--            <span>)</span>-->
-<!--            <span class="cart-sum" th:text="${@cart.sum}"></span>-->
-<!--            <span class="currency">zl</span>-->
-<!--        </div>-->
-<!--    </a>-->
-<!--</div>-->
-
 <div class="card-container">
     <div class="card">
         <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
             <!-- Left side for Restaurant ID and Table -->
             <div>
                 <h5 class="card-title">Selected Restaurant and Table</h5>
-                <p>Restaurant ID: <span th:text="${restaurantId}"></span></p>
-                <p>Table: <span th:text="${selectedTable}"></span></p>
 
+                <p><span th:text="${selectedRestaurantName}"></span></p>
+                <p>Table: <span th:text="${selectedTable}"></span></p>
+                <p>Selected Payment Method: <span th:text="${selectedPaymentMethodName}"></span></p>
                 <hr> <!-- Horizontal line for separation -->
             </div>
 
@@ -226,7 +208,7 @@
             <div style="text-align: right;">
                 <!-- Koszyk info in one line -->
                 <div class="koszyk-info" style="display: inline-block; text-align: right;">
-                    <p class="koszyk-label" style="display: inline;">Koszyk (</p>
+                    <p class="koszyk-label" style="display: inline;">Cart (</p>
                     <span class="cart-counter" th:text="${@cart.counter}"></span>
                     <span>)</span>
                     <span class="cart-sum" th:text="${@cart.sum}"></span>
@@ -243,12 +225,6 @@
         </div>
     </div>
 </div>
-
-<div>
-    <!-- Display the selected payment method -->
-    <p>Selected Payment Method ID: <span th:text="${paymentMethodId}"></span></p>
-</div>
-
 
 <li th:each="category : ${categories}">
     <div class="card-container">

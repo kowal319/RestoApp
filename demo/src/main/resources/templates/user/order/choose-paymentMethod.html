@@ -2,13 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Menu</title>
+    <title>Payment Method</title>
     <!-- Add your CSS links and styles here -->
     <style>
         body {
             background-image: url('/img/tlo.jpg');
             background-size: cover;
             background-position: center;
+        }
+
+     .header-container {
+            text-align: center;
+            color: black;
+            padding: 50px 0;
+            margin-bottom: 20px;
+        }
+
+        .header-text {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subheader-text {
+            font-size: 18px;
+            color: black;
         }
 
         .card-container {
@@ -63,6 +81,12 @@
 <div th:replace="user/fragments/header ::navbar"></div>
 <br />
 
+<div class="header-container">
+    <div class="header-text">Please Choose Your Payment Method</div>
+    <div class="subheader-text">Select a payment method that suits you best.</div>
+</div>
+
+
 <div th:each="paymentMethod : ${paymentMethods}" class="card-container">
     <div class="card">
         <div class="card-body">
@@ -70,7 +94,7 @@
         </div>
     </div>
     <div class="add-to-cart-btn">
-        <a th:href="@{'/order/choose-restaurant?paymentMethodId=' + ${paymentMethod.id}}" class="btn btn-primary">Choose Restaurant</a>
+        <a th:href="@{'/order/choose-restaurant?paymentMethodId=' + ${paymentMethod.id}}" class="btn btn-primary">Choose this method</a>
     </div>
 </div>
 

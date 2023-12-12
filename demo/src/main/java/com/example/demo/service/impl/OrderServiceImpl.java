@@ -69,11 +69,9 @@ public void saveOrder(OrderDto orderDto) {
     PaymentMethod paymentMethod = paymentMethodService.findById(orderDto.getPaymentMethodId());
     order.setPaymentMethod(paymentMethod);
 
+    order.setPaid(orderDto.isPaid()); // Assuming isPaid() returns a boolean value
+
     orderRepository.save(order);
-
-    System.out.println("Order after save: " + order);
-    System.out.println("OrderItems after save: " + orderItems);
-
     cart.clearCart();
 }
 
