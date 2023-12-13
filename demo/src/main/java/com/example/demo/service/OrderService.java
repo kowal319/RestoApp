@@ -14,6 +14,7 @@ public interface OrderService {
 
     void saveOrder(OrderDto orderDto);
 
+    void saveOrderPaypalSuccess(OrderDto orderDto);
 
     List<Order> findAllOrders();
 
@@ -29,4 +30,5 @@ public interface OrderService {
 
     Double calculateTotalPriceByOrderId(Long orderId);
 
+    Order updatePaidOrder(Long id, Order updatePaidOrder);
 }

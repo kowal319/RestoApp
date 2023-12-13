@@ -67,6 +67,7 @@
     <th>Table</th>
     <th>Payment Method</th>
     <th>Total Price</th>
+    <th>Paid?</th>
     <th>Actions</th>
   </tr>
   </thead>
@@ -79,6 +80,8 @@
     <td th:text="${order.tableNumber}"></td>
     <td th:text="${order.paymentMethod?.name}"></td>
     <td th:text="${order.totalPrice}"></td>
+    <td th:text="${order.paid}"></td>
+
     <td>
       <a th:href="@{/order/admin/orderDetails/{id}(id=${order.orderId})}">
         <button type="button" class="btn btn-info">Info</button>

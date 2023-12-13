@@ -63,6 +63,8 @@
       <th>Restaurant name</th>
       <th>Table number</th>
       <th>Payment Method</th>
+      <th>Paid?</th>
+
       <th></th>
     </tr>
     </thead>
@@ -75,7 +77,7 @@
 
       <td th:text="${order.tableNumber}"></td>
       <td th:text="${order.paymentMethod?.name}"></td>
-
+      <td th:text="${order.paid}"></td>
       <td>
         <a th:href="@{/order/orderDetails/{id}(id=${order.orderId})}">
           <button type="button" class="btn btn-info">Info</button>

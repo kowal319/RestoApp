@@ -44,8 +44,8 @@ public class Order {
     private Double totalPrice;
 
 
-    @Column(name = "paid", columnDefinition = "TINYINT(1)")
-    private boolean paid;
+    @Column(name = "paid")
+    private String paid;
 
 }
 

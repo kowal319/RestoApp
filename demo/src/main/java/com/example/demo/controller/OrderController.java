@@ -128,18 +128,15 @@ private final OrderService orderService;
     public String saveOrder(OrderDto orderDto, HttpSession session) {
     // Common logic
     handleOrderSave(orderDto, session);
-    return "redirect:/order/myOrders";
+    orderService.saveOrder(orderDto);
+        return "redirect:/order/myOrders";
 }
 
 
     @PostMapping("/savepaypal")
     public String saveWithPaypal(OrderDto orderDto, HttpSession session) {
     handleOrderSave(orderDto, session);
-    boolean paymentDone = true;
-        orderDto.setPaid(paymentDone);
-        System.out.println("before saving " + paymentDone);
-        orderService.saveOrder(orderDto);
-
+    orderService.saveOrderPaypalSuccess(orderDto);
         return "redirect:/order/myOrders";
     }
 
@@ -151,6 +148,7 @@ private final OrderService orderService;
         Long restaurantId = (Long) session.getAttribute("restaurantId");
         Integer selectedTable = (Integer) session.getAttribute("selectedTable");
         Long paymentMethodId = (Long) session.getAttribute("paymentMethodId");
+
 
         if (currentUser == null) {
             throw new RuntimeException("User not found"); // Or redirect to an error page
@@ -292,8 +290,6 @@ public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long pay
         Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
         model.addAttribute("selectedRestaurant", selectedRestaurant);
 
-
-
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("availableTables", availableTables);
 
@@ -327,7 +323,6 @@ public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long pay
                                         @ModelAttribute("restaurantId") Long restaurantId,
                                         Model model, HttpSession session
                                        ) {
-
         session.setAttribute("restaurantId", restaurantId);
          session.setAttribute("selectedTable", selectedTable);
         return "redirect:/products";
@@ -336,11 +331,22 @@ public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long pay
     @PostMapping("/proceedToPayment")
     public String proceedToPayment(Model model) {
         // Add the cart information to the model
-
         model.addAttribute("cart", cart);
-
         // Return the payment confirmation page
         return "paymentConfirmation";
+    }
+
+    @GetMapping("/updatePaid/{id}")
+    public String updatePaidForm(@PathVariable Long id, Model model) {
+        Order order = orderService.findById(id);
+        model.addAttribute("order", order);
+        return "admin/order/updatePaidOrder"; // Create an "edit-product.html" template
+    }
+
+    @PostMapping("/updatePaid/{id}")
+    public String updatePaid(@PathVariable Long id, @ModelAttribute Order updatedPaidOrder) {
+        orderService.updatePaidOrder(id, updatedPaidOrder);
+        return "redirect:/order/admin/allOrders"; // Redirect to the product list page after editing.
     }
 
 }

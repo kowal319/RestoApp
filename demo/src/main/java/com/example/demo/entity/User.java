@@ -50,7 +50,6 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-
-
-
+    @Column(name = "ofAge")
+    private String ofAge;
 }

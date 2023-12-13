@@ -164,6 +164,19 @@ public List<Order> showOrders(){
     }
 
 
+    @GetMapping("ofAgeUser/{id}")
+    public String ofAgeUserForm(@PathVariable Long id, Model model){
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "admin/user/ofAgeUser";
+    }
+
+    @PostMapping("/ofAgeUser/{id}")
+    public String ofAgeUser(@PathVariable Long id, @ModelAttribute User updateOfAgeUser){
+        userService.updateUser(id, updateOfAgeUser);
+        return "redirect:/users";
+    }
+
 }
 
 

@@ -10,10 +10,8 @@ import com.example.demo.service.OrderService;
 import com.example.demo.service.PaymentMethodService;
 import com.example.demo.service.RestaurantService;
 import com.example.demo.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -68,14 +66,37 @@ public void saveOrder(OrderDto orderDto) {
 
     PaymentMethod paymentMethod = paymentMethodService.findById(orderDto.getPaymentMethodId());
     order.setPaymentMethod(paymentMethod);
-
-    order.setPaid(orderDto.isPaid()); // Assuming isPaid() returns a boolean value
-
+    order.setTotalPrice(orderDto.getTotalAmount());
+    order.setPaid("unpaid");
     orderRepository.save(order);
     cart.clearCart();
 }
 
-    @Override
+@Override
+    public void saveOrderPaypalSuccess(OrderDto orderDto) {
+        Order order = OrderMapper.mapToOrder(orderDto);
+        User user = userService.findById(orderDto.getUserId());
+        order.setUser(user);
+
+        List<OrderItem> orderItems = OrderMapper.mapToOrderItemList(cart, order);
+        order.setOrderItems(orderItems);
+
+        Restaurant restaurant = restaurantService.findById(orderDto.getRestaurantId());
+        order.setRestaurant(restaurant);
+        order.setTableNumber(orderDto.getTableNumber());
+
+        System.out.println("Order before save: " + order);
+        System.out.println("OrderItems before save: " + orderItems);
+
+        PaymentMethod paymentMethod = paymentMethodService.findById(orderDto.getPaymentMethodId());
+        order.setPaymentMethod(paymentMethod);
+    order.setPaid("paid");
+        orderRepository.save(order);
+        cart.clearCart();
+    }
+
+
+        @Override
     public List<Order> findAllOrders() {
         return orderRepository.findAll();
     }
@@ -131,5 +152,18 @@ public void saveOrder(OrderDto orderDto) {
     @Override
     public Double calculateTotalPriceByOrderId(Long orderId) {
         return orderRepository.calculateTotalPriceByOrderId(orderId).orElse(0.0);
+    }
+
+
+    @Override
+    public Order updatePaidOrder(Long id, Order updatePaidOrder) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (optionalOrder.isPresent()) {
+            Order existingOrder = optionalOrder.get();
+            existingOrder.setPaid(updatePaidOrder.getPaid());
+                return orderRepository.save(existingOrder);
+        } else {
+            return null;
+        }
     }
 }

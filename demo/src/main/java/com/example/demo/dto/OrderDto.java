@@ -21,10 +21,6 @@ private Long userId;
     private String method;
     private String intent;
     private String description;
-    private boolean paid;
-
-    public boolean isPaid() {
-        return paid;
-    }
+   private String paid;
 }
 
