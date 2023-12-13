@@ -78,6 +78,7 @@
 
     <button type="submit" class="btn btn-primary">Update</button>
     <a th:href="@{/users}" class="btn btn-secondary">Cancel</a>
+    <a th:if="${#lists.contains(user.roles.![name], 'CUSTOMER')}" th:href="@{/users/ofAgeUser/{id}(id=${user.id})}" class="btn btn-warning">Confirm age 18+</a>
 </form>
 </body>
 

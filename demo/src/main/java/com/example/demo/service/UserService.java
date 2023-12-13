@@ -38,4 +38,5 @@ public interface UserService {
 
     User saveUserWithRole(User user, String roleName);
 
+    User updateUserOfAge(Long id, User updatedOfAgeUser);
 }

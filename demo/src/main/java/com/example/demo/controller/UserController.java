@@ -35,12 +35,34 @@ public class UserController {
     }
 
 
-    @GetMapping
-    public String showAllUsers(Model model) {
-        List<User> users = userService.findAllUsers();
-        model.addAttribute("users", users);
-        return "admin/user/users";
+//    @GetMapping
+//    public String showAllUsers(Model model) {
+//        List<User> users = userService.findAllUsers();
+//        model.addAttribute("users", users);
+//        return "admin/user/users";
+//    }
+@GetMapping
+public String showFilteredUsers(@RequestParam(name = "roleFilter", required = false) String roleFilter, Model model) {
+    List<User> users;
+    model.addAttribute("selectedRole", roleFilter);
+
+    if ("RESET".equals(roleFilter)) {
+        // If reset option is selected, show all users
+        users = userService.findAllUsers();
+    } else if (roleFilter != null && !roleFilter.isEmpty()) {
+        // Filter users by role
+        users = userService.findUsersByRole(roleFilter);
+    } else {
+        // If no role filter, show all users
+        users = userService.findAllUsers();
     }
+
+    model.addAttribute("users", users);
+    return "admin/user/users";
+}
+
+
+
 
     @GetMapping("/customers")
     public String showCustomerList(Model model) {
@@ -60,27 +82,27 @@ public class UserController {
     public String showAddEmployeeForm(Model model) {
         // populate the model as needed
         model.addAttribute("user", new User());
-        return "admin/user/addEmployee"; // adjust the template name accordingly
+        return "admin/user/addEmployee";
     }
 
     @PostMapping("/addEmployee")
     public String addEmployee(@ModelAttribute("user") User user, BindingResult result) {
         // add logic to save the user with the "EMPLOYEE" role
         userService.saveUserWithRole(user, "EMPLOYEE");
-        return "redirect:/users/employees"; // redirect to the employee list page
+        return "redirect:/users";
     }
     @GetMapping("/addCustomer")
     public String showAddCustomerForm(Model model) {
         // populate the model as needed
         model.addAttribute("customer", new User());
-        return "admin/user/addCustomer"; // adjust the template name accordingly
+        return "admin/user/addCustomer";
     }
 
     @PostMapping("/addCustomer")
     public String addCustomer(@ModelAttribute("customer") User user, BindingResult result) {
         // add logic to save the user with the "EMPLOYEE" role
         userService.saveUserWithRole(user, "CUSTOMER");
-        return "redirect:/users/customers"; // redirect to the employee list page
+        return "redirect:/users";
     }
 
     @GetMapping("/{id}/orders")
@@ -173,7 +195,7 @@ public List<Order> showOrders(){
 
     @PostMapping("/ofAgeUser/{id}")
     public String ofAgeUser(@PathVariable Long id, @ModelAttribute User updateOfAgeUser){
-        userService.updateUser(id, updateOfAgeUser);
+        userService.updateUserOfAge(id, updateOfAgeUser);
         return "redirect:/users";
     }
 

@@ -6,43 +6,55 @@
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
   <style>
-        /* Add custom styles if needed */
-        body {
-            padding: 20px;
-        }
+    /* Add custom styles if needed */
+    body {
+      padding: 20px;
+    }
 
-        h1 {
-            color: #007bff; /* Bootstrap primary color */
-        }
+    h1 {
+      color: #007bff; /* Bootstrap primary color */
+    }
 
-        table {
-            width: 100%;
-            margin-top: 20px;
-        }
+    table {
+      width: 100%;
+      margin-top: 20px;
+    }
 
-        th, td {
-            text-align: left;
-            padding: 8px;
-        }
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
 
-        th {
-            background-color: #007bff; /* Bootstrap primary color */
-            color: white;
-        }
+    th {
+      background-color: #007bff; /* Bootstrap primary color */
+      color: white;
+    }
 
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2; /* Alternate row color */
-        }
+    tbody tr:nth-child(even) {
+      background-color: #f2f2f2; /* Alternate row color */
+    }
 
-        .actions {
-            display: flex;
-            justify-content: space-between;
-        }
+    .actions {
+      display: flex;
+      justify-content: space-between;
+    }
 
-        .btn {
-            margin-right: 5px;
-        }
-    </style>
+    .btn {
+      margin-right: 5px;
+    }
+  </style>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var roleFilter = document.getElementById('roleFilter');
+    var urlParams = new URLSearchParams(window.location.search);
+    var selectedRole = urlParams.get('roleFilter');
+
+    if (selectedRole) {
+      roleFilter.value = selectedRole;
+    }
+  });
+</script>
 </head>
 
 <div th:replace="admin/fragments/admin-header ::header"></div>
@@ -52,9 +64,23 @@
 <br />
 
 <h1>User List</h1>
-<a th:href="@{/users/addUser}" class="btn btn-primary">Add User</a>
+<!--<a th:href="@{/users/addUser}" class="btn btn-primary">Add User</a>-->
+<a th:href="@{/users/addCustomer}" class="btn btn-primary">Add Customer</a>
+<a th:href="@{/users/addEmployee}" class="btn btn-primary">Add Employee</a>
 
 
+
+<form th:action="@{/users}" method="get" id="roleFilterForm">
+  <label for="roleFilter">Filter by Role:</label>
+  <select class="form-control" id="roleFilter" name="roleFilter"
+          onchange="document.getElementById('roleFilterForm').submit()">
+    <option value="" th:selected="${selectedRole == null}">All Roles</option>
+    <option value="ADMIN" th:selected="${selectedRole == 'ADMIN'}">Admin</option>
+    <option value="CUSTOMER" th:selected="${selectedRole == 'CUSTOMER'}">Customer</option>
+    <option value="EMPLOYEE" th:selected="${selectedRole == 'EMPLOYEE'}">Employee</option>
+<!--    <option value="RESET" th:selected="${selectedRole == 'RESET'}">All Users</option>-->
+  </select>
+</form>
 
 
 <table class="table table-bordered table-striped">

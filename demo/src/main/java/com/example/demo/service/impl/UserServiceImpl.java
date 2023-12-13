@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import com.example.demo.dto.ChangePasswordDTO;
 import com.example.demo.dto.RegistrationDto;
 import com.example.demo.entity.CreditCard;
-import com.example.demo.entity.Order;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.repository.RoleRepository;
@@ -191,8 +190,21 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new IllegalArgumentException("Role not found: " + roleName);
         }
-
         return savedUser;
+    }
+
+
+    @Override
+    public User updateUserOfAge(Long id, User updatedOfAgeUser) {
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            existingUser.setOfAge(updatedOfAgeUser.getOfAge());
+            return userRepository.save(existingUser);
+        } else {
+            return null;
+        }
     }
 
 }
