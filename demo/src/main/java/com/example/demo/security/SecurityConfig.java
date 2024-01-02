@@ -45,12 +45,13 @@ public static PasswordEncoder passwordEncoder(){
             .authorizeHttpRequests((authorize) -> authorize
                     .requestMatchers("/registration").permitAll()
                     .requestMatchers("/home").permitAll()
-                    .requestMatchers("/products/newProduct").hasAuthority("ADMIN")
+                    .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                    .requestMatchers("/employee/**").hasAuthority("EMPLOYEE")
+
                     .anyRequest().authenticated()
        ).httpBasic(Customizer.withDefaults())
             .formLogin((form) -> form
                     .loginPage("/login")
-//                    .defaultSuccessUrl("/users/profile", true)
                             .successHandler(successHandler)
 
                             .permitAll()
@@ -60,17 +61,6 @@ public static PasswordEncoder passwordEncoder(){
     return http.build();
 }
 
-
-
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//
-//                .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated()
-//                ).httpBasic(Customizer.withDefaults());
-//
-//        return http.build();
-//    }
 
 
 }

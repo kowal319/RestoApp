@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,13 +39,8 @@ public class Order {
     @JoinColumn(name = "payment_method_id", referencedColumnName = "id")
     private PaymentMethod paymentMethod;
 
-    @Column(name = "total_price")
-    private Double totalPrice;
-
-
     @Column(name = "paid")
     private String paid;
-
 }
 
 

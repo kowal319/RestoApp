@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: #007bff;
+        }
+
+        .card p {
+            color: #495057;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<div th:replace="admin/fragments/admin-header ::header"></div>
+
+<body>
+<div th:replace="admin/fragments/admin-header ::navbar"></div>
+<br />
+<div class="main-content">
+
+    <h1>Employee Dashboard</h1>
+
+    <!-- User Management Section -->
+    <div class="section">
+        <div class="card">
+            <h2>Confirm User Age</h2>
+            <p>Confirm user profile that is +18</p>
+            <div class="actions">
+                <a th:href="@{/users/employee/customers}" class="btn">Manage Customers</a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Management Section -->
+    <div class="section">
+        <div class="card">
+            <h2>Confirm Payment</h2>
+            <p>Confirm that the order is paid by the user</p>
+            <div class="actions">
+                <a th:href="@{order/admin/allOrders}" class="btn">View Orders</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

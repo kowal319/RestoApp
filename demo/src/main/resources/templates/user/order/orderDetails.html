@@ -65,15 +65,12 @@
 <div class="card-container">
   <h1>Order Details</h1>
 
-  <p>Total Sum in Cart: <span th:text="${totalSumInCart}"></span> zł</p>
+  <p>Total price: <span th:text="${totalSumInCart}"></span> zł</p>
 
-  <p>ID: <span th:text="${order.orderId}"></span></p>
-  <p>Created: <span th:text="${#temporals.format(order.created, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+  <p>Order Number: <span th:text="${order.orderId}"></span></p>
+  <p>Order Created on: <span th:text="${#temporals.format(order.created, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
   <p>Restaurant:  <span th:text="${order.restaurant.name}"></span></p>
   <p>Table nr: <span th:text="${order.tableNumber}"></span></p>
-
-  <!--  <p>Created: <span th:text="${order.created}"></span></p>-->
-
   <table>
     <tr>
       <th>Name</th>

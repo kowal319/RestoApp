@@ -20,12 +20,14 @@ public class HomeController {
 
     @GetMapping("/home")
     public String homePage() {
-        // Your login logic here
-        return "home"; // Redirect to the products page after successful login
+        return "home";
     }
     @GetMapping("/homeAdmin")
     public String homePageAdmin() {
-        // Your login logic here
-        return "admin/homeAdmin"; // Redirect to the products page after successful login
+        return "admin/homeAdmin"; }
+
+    @GetMapping("/homeEmployee")
+    public String homePageEmployee() {
+        return "employee/homeEmployee";
     }
 }

@@ -27,7 +27,12 @@ public class RestaurantController {
     model.addAttribute("restaurants", restaurants);
     return "admin/restaurant/admin-all-restaurants";
     }
-
+    @GetMapping("/employee")
+    public String findAllRestaurantsEmployee(Model model){
+        List<Restaurant>  restaurants = restaurantService.findAllRestaurants();
+        model.addAttribute("restaurants", restaurants);
+        return "employee/restaurants";
+    }
     @PostMapping("/save")
     public String createRestaurant(@ModelAttribute("restaurant") Restaurant restaurant)
     {

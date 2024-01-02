@@ -23,6 +23,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Double> findOrderTotalSum(@Param("orderId") Long orderId);
 
     // Method to calculate the total price of an order by orderId
+
     @Query("SELECT SUM(oi.amount * p.price) FROM OrderItem oi " +
             "JOIN Product p ON oi.itemId = p.id " +
             "WHERE oi.orderId = :orderId")

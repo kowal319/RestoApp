@@ -35,13 +35,6 @@ public class ProductController {
     }
 
 
-//      View all products without user id restuarnt id and table number
-//    @GetMapping()
-//    public String viewAllProducts(Model model) {
-//        List<Product> products = productService.findAllProducts();
-//        model.addAttribute("products", products);
-//        return "user/order/products";
-//    }
 @GetMapping()
 public String viewAllProducts(Model model, HttpSession session) {
     List<Product> products = productService.findAllProducts();
@@ -57,11 +50,11 @@ public String viewAllProducts(Model model, HttpSession session) {
     model.addAttribute("categories", categories);
 
 
-    Long paymentMethodId = (Long) session.getAttribute("paymentMethodId"); // Retrieve paymentMethodId
-
-    model.addAttribute("paymentMethodId", paymentMethodId); // Add paymentMethodId to the model
-
-    String selectedPaymentMethodName = (String) session.getAttribute("selectedPaymentMethodName");
+//    Long paymentMethodId = (Long) session.getAttribute("paymentMethodId"); // Retrieve paymentMethodId
+//
+//    model.addAttribute("paymentMethodId", paymentMethodId); // Add paymentMethodId to the model
+//
+//    String selectedPaymentMethodName = (String) session.getAttribute("selectedPaymentMethodName");
 
 Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
 String selectedRestaurantName = selectedRestaurant.getName();
@@ -69,7 +62,7 @@ String selectedRestaurantName = selectedRestaurant.getName();
     model.addAttribute("selectedRestaurantName", selectedRestaurantName);
 
     // Add the selected payment method name to the model
-    model.addAttribute("selectedPaymentMethodName", selectedPaymentMethodName);
+//    model.addAttribute("selectedPaymentMethodName", selectedPaymentMethodName);
 
 
 

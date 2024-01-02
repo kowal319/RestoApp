@@ -24,15 +24,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final Cart cart;
-
     private final RestaurantService restaurantService;
-
     private final UserService userService;
-
     private final PaymentMethodService paymentMethodService;
-
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, Cart cart, RestaurantService restaurantService, UserService userService, PaymentMethodService paymentMethodService) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
+                            Cart cart, RestaurantService restaurantService, UserService userService,
+                            PaymentMethodService paymentMethodService) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.cart = cart;
@@ -41,14 +39,7 @@ public class OrderServiceImpl implements OrderService {
         this.paymentMethodService = paymentMethodService;
     }
 
-    // Save order without user, restaurant and table
-//    @Override
-//    public void saveOrder(OrderDto orderDto){
-//        Order order = OrderMapper.mapToOrder(orderDto);
-//        orderRepository.save(order);
-//        orderItemRepository.saveAll(OrderMapper.mapToOrderItemList(cart, order));
-//        cart.clearCart();
-//    }
+    @Override
 public void saveOrder(OrderDto orderDto) {
     Order order = OrderMapper.mapToOrder(orderDto);
     User user = userService.findById(orderDto.getUserId());
@@ -66,7 +57,6 @@ public void saveOrder(OrderDto orderDto) {
 
     PaymentMethod paymentMethod = paymentMethodService.findById(orderDto.getPaymentMethodId());
     order.setPaymentMethod(paymentMethod);
-    order.setTotalPrice(orderDto.getTotalAmount());
     order.setPaid("unpaid");
     orderRepository.save(order);
     cart.clearCart();
@@ -112,10 +102,8 @@ public void saveOrder(OrderDto orderDto) {
         User currentUser = userService.getCurrentUser(authentication);
 
         if (hasRole(currentUser, "CUSTOMER")) {
-            // Fetch orders only for the current customer
             return orderRepository.findByUser(currentUser);
         } else {
-            // Fetch all orders for admin or employee
             return orderRepository.findAll();
         }
     }

@@ -24,7 +24,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/order")
 public class OrderController {
 
-private final OrderService orderService;
+    private final OrderService orderService;
+
     private final CartService cartService;
 
     private final UserService userService;
@@ -83,7 +84,20 @@ private final OrderService orderService;
 
 
     @GetMapping("/summary")
-    public String showSummary(Model model, HttpSession session){
+    public String showSummary(Model model, HttpSession session,
+                              @RequestParam("paymentMethodId") Long paymentMethodId){
+
+// Add the user object to the model
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        model.addAttribute("user", user);
+
+        //Select payment method
+        session.setAttribute("paymentMethodId", paymentMethodId);
+  PaymentMethod selectedPaymentMethod = paymentMethodService.findById(paymentMethodId);
+model.addAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
+   session.setAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
+
 
         String selectedPaymentMethodName = (String) session.getAttribute("selectedPaymentMethodName");
         Long restaurantId = (Long) session.getAttribute("restaurantId");
@@ -98,32 +112,13 @@ private final OrderService orderService;
         model.addAttribute("selectedTable", selectedTable);
         model.addAttribute("selectedPaymentMethodName", selectedPaymentMethodName);
 
+        System.out.println("Selected Payment Method Name from Session: " + session.getAttribute("selectedPaymentMethodName"));
+        System.out.println("Payment Method ID from Session: " + session.getAttribute("paymentMethodId"));
+
         return "user/order/summary";
     }
 
 
-//    @PostMapping("/saveorder")
-//    public String saveOrder(OrderDto orderDto, HttpSession session) {
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String loggedInUsername = authentication.getName();
-//
-//        User currentUser = userService.findByUsername(loggedInUsername);
-//        Long restaurantId = (Long) session.getAttribute("restaurantId");
-//        Integer selectedTable = (Integer) session.getAttribute("selectedTable");
-//        Long paymentMethodId = (Long) session.getAttribute("paymentMethodId");
-//
-//        if (currentUser == null) {
-//            return "redirect:/error";}
-//
-//        orderDto.setUserId(currentUser.getId());
-//        orderDto.setRestaurantId(restaurantId);
-//        orderDto.setTableNumber(selectedTable);
-//        orderDto.setPaymentMethodId(paymentMethodId);
-//
-//        orderService.saveOrder(orderDto);
-//        return "redirect:/order/myOrders";
-//    }
     @PostMapping("/saveorder")
     public String saveOrder(OrderDto orderDto, HttpSession session) {
     // Common logic
@@ -172,7 +167,6 @@ private final OrderService orderService;
     @GetMapping("/admin/allOrders")
     public String viewAllOrders(Model model) {
         List<Order> orders = orderService.findAllOrders();
-        // Group orders by restaurant and table number
         Map<String, List<Order>> ordersByRestaurantAndTable = orders.stream()
                 .filter(order -> order.getRestaurant() != null)
                 .collect(Collectors.groupingBy(order -> order.getRestaurant().getName() + ": Table " + order.getTableNumber()));
@@ -244,78 +238,129 @@ private final OrderService orderService;
         return "admin/order/cardDetails";
     }
 
-    @GetMapping("/choose-paymentMethod")
-    public String showChoosePaymentMethodForm(Model model, HttpSession session) {
-        // Fetch all restaurants
-        List<PaymentMethod> paymentMethods = paymentMethodService.findAllPaymentMethods();
-        model.addAttribute("paymentMethods", paymentMethods);
-        return "user/order/choose-paymentMethod";
-    }
-
-    @PostMapping("/choose-payment")
-    public String choosePayment(@RequestParam("paymentMethodId") Long paymentMethodId,
-                                HttpSession session) {
-        // Save the paymentMethodId in the session for later use
-        session.setAttribute("paymentMethodId", paymentMethodId);
-        return "redirect:/order/choose-restaurant";
-    }
-
-@GetMapping("/choose-restaurant")
-public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long paymentMethodId,
-                                       Model model, HttpSession session) {
-    session.setAttribute("paymentMethodId", paymentMethodId);
-    List<Restaurant> restaurants = restaurantService.findAllRestaurants();
-    model.addAttribute("restaurants", restaurants);
-
-    // Fetch the PaymentMethod based on paymentMethodId
-    PaymentMethod selectedPaymentMethod = paymentMethodService.findById(paymentMethodId);
-
-    model.addAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
-    // Save payment method name in session for later use
-    session.setAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
-
-    return "user/order/choose-restaurant";
+//    @GetMapping("/choose-paymentMethod")
+//    public String showChoosePaymentMethodForm(Model model, HttpSession session) {
+//        // Fetch all restaurants
+//        List<PaymentMethod> paymentMethods = paymentMethodService.findAllPaymentMethods();
+//        model.addAttribute("paymentMethods", paymentMethods);
+//        return "user/order/choose-paymentMethod";
+//    }
+//
+//    @PostMapping("/choose-payment")
+//    public String choosePayment(@RequestParam("paymentMethodId") Long paymentMethodId,
+//                                HttpSession session) {
+//        // Save the paymentMethodId in the session for later use
+//        session.setAttribute("paymentMethodId", paymentMethodId);
+//        return "redirect:/order/choose-restaurant";
+//    }
+@GetMapping("/choose-paymentMethod")
+public String showChoosePaymentMethodForm(Model model, HttpSession session) {
+    // Fetch all restaurants
+    List<PaymentMethod> paymentMethods = paymentMethodService.findAllPaymentMethods();
+    model.addAttribute("paymentMethods", paymentMethods);
+    return "user/order/choose-paymentMethod";
 }
+    @PostMapping("/choose-payment/{id}")
+    public String choosePayment(@RequestParam("paymentMethodId") Long paymentMethodId,
+                                HttpSession session, Model model) {
+        // Retrieve the selected payment method
+        System.out.println("Payment Method ID: " + paymentMethodId);
 
-    @PostMapping("/choose-restaurant/{id}")
-    public String processRestaurantSelection(@RequestParam("restaurantId") Long restaurantId,
-                                             @RequestParam("paymentMethodId") Long paymentMethodId,
-                                             Model model,
-                                             HttpSession session) {
+        PaymentMethod selectedPaymentMethod = paymentMethodService.findById(paymentMethodId);
 
+        // Save both the ID and the name in the session for later use
         session.setAttribute("paymentMethodId", paymentMethodId);
+        session.setAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
 
-        List<Integer> availableTables = restaurantService.tablesList(restaurantId);
-
-        Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
-        model.addAttribute("selectedRestaurant", selectedRestaurant);
-
-        model.addAttribute("restaurantId", restaurantId);
-        model.addAttribute("availableTables", availableTables);
-
-        // Redirect to a page where the user can choose a table
-        return "user/order/choose-restaurant/" + restaurantId + "/choose-table";
-    }
-
-    @GetMapping("/choose-restaurant/{id}/choose-table")
-    public String showChooseTableForm(
-                                      @PathVariable Long id, Model model, HttpSession session) {
-
-        Long paymentMethodId = (Long) session.getAttribute("paymentMethodId");
-
+        model.addAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
         model.addAttribute("paymentMethodId", paymentMethodId);
 
-        String selectedPaymentMethodName = (String) session.getAttribute("selectedPaymentMethodName");
-
-        // Add the selected payment method name to the model
-        model.addAttribute("selectedPaymentMethodName", selectedPaymentMethodName);
-
-        Restaurant restaurant = restaurantService.findById(id);
-        model.addAttribute("restaurant", restaurant);
-        List<Integer> availableTables = restaurantService.tablesList(id);
-        model.addAttribute("availableTables", availableTables);
-        return "user/order/choose-table";
+        return "redirect:/user/order/summary";  // Redirect to the summary page
     }
+
+//    @GetMapping("/choose-restaurant")
+//    public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long paymentMethodId,
+//                                       Model model, HttpSession session) {
+//    session.setAttribute("paymentMethodId", paymentMethodId);
+//    List<Restaurant> restaurants = restaurantService.findAllRestaurants();
+//    model.addAttribute("restaurants", restaurants);
+//
+//    // Fetch the PaymentMethod based on paymentMethodId
+//    PaymentMethod selectedPaymentMethod = paymentMethodService.findById(paymentMethodId);
+//
+//    model.addAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
+//    // Save payment method name in session for later use
+//    session.setAttribute("selectedPaymentMethodName", selectedPaymentMethod.getName());
+//
+//    return "user/order/choose-restaurant";
+//}
+@GetMapping("/choose-restaurant")
+public String showChooseRestaurantForm(
+                                       Model model, HttpSession session) {
+    List<Restaurant> restaurants = restaurantService.findAllRestaurants();
+    model.addAttribute("restaurants", restaurants);
+    return "user/order/choose-restaurant";
+}
+//
+//    @PostMapping("/choose-restaurant/{id}")
+//    public String processRestaurantSelection(@RequestParam("restaurantId") Long restaurantId,
+//                                             @RequestParam("paymentMethodId") Long paymentMethodId,
+//                                             Model model,
+//                                             HttpSession session) {
+//
+//        session.setAttribute("paymentMethodId", paymentMethodId);
+//
+//        List<Integer> availableTables = restaurantService.tablesList(restaurantId);
+//
+//        Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
+//        model.addAttribute("selectedRestaurant", selectedRestaurant);
+//
+//        model.addAttribute("restaurantId", restaurantId);
+//        model.addAttribute("availableTables", availableTables);
+//
+//        // Redirect to a page where the user can choose a table
+//        return "user/order/choose-restaurant/" + restaurantId + "/choose-table";
+//    }
+@PostMapping("/choose-restaurant/{id}")
+public String processRestaurantSelection(@RequestParam("restaurantId") Long restaurantId,
+                                         Model model) {
+    List<Integer> availableTables = restaurantService.tablesList(restaurantId);
+
+    Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
+    model.addAttribute("selectedRestaurant", selectedRestaurant);
+
+    model.addAttribute("restaurantId", restaurantId);
+    model.addAttribute("availableTables", availableTables);
+    return "user/order/choose-restaurant/" + restaurantId + "/choose-table";
+}
+//    @GetMapping("/choose-restaurant/{id}/choose-table")
+//    public String showChooseTableForm(
+//                                      @PathVariable Long id, Model model, HttpSession session) {
+//
+//        Long paymentMethodId = (Long) session.getAttribute("paymentMethodId");
+//
+//        model.addAttribute("paymentMethodId", paymentMethodId);
+//
+//        String selectedPaymentMethodName = (String) session.getAttribute("selectedPaymentMethodName");
+//
+//        // Add the selected payment method name to the model
+//        model.addAttribute("selectedPaymentMethodName", selectedPaymentMethodName);
+//
+//        Restaurant restaurant = restaurantService.findById(id);
+//        model.addAttribute("restaurant", restaurant);
+//        List<Integer> availableTables = restaurantService.tablesList(id);
+//        model.addAttribute("availableTables", availableTables);
+//        return "user/order/choose-table";
+//    }
+@GetMapping("/choose-restaurant/{id}/choose-table")
+public String showChooseTableForm(
+        @PathVariable Long id, Model model, HttpSession session) {
+    Restaurant restaurant = restaurantService.findById(id);
+    model.addAttribute("restaurant", restaurant);
+    List<Integer> availableTables = restaurantService.tablesList(id);
+    model.addAttribute("availableTables", availableTables);
+    return "user/order/choose-table";
+}
 
     @PostMapping("/choose-restaurant/{id}/choose-table")
     public String processTableSelection(@PathVariable Long id,
@@ -348,5 +393,29 @@ public String showChooseRestaurantForm(@RequestParam("paymentMethodId") Long pay
         orderService.updatePaidOrder(id, updatedPaidOrder);
         return "redirect:/order/admin/allOrders"; // Redirect to the product list page after editing.
     }
+
+    @GetMapping("/employee/allOrders")
+    public String viewAllOrdersEmployee(Model model) {
+        List<Order> orders = orderService.findAllOrders();
+        model.addAttribute("orders", orders);
+        return "admin/order/allOrders";
+    }
+
+    @GetMapping("/employee/choose-restaurant")
+    public String showChooseRestaurantForm(Model model) {
+        List<Restaurant> restaurants = restaurantService.findAllRestaurants();
+        model.addAttribute("restaurants", restaurants);
+        return "user/order/choose-restaurant";
+    }
+
+    @PostMapping("/employee/choose-restaurant/{id}")
+    public String processRestaurantSelection(@RequestParam("restaurantId") Long restaurantId,
+                                             Model model,
+                                             HttpSession session) {
+        Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
+        model.addAttribute("restaurantId", restaurantId);
+        return "employee/choose-restaurant/" + restaurantId + "/orders";
+    }
+
 
 }

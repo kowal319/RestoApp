@@ -70,6 +70,12 @@ public String showFilteredUsers(@RequestParam(name = "roleFilter", required = fa
         model.addAttribute("customers", customers);
         return "admin/user/customers";
     }
+    @GetMapping("/employee/customers")
+    public String showCustomerListEmployee(Model model) {
+        List<User> customers = userService.findUsersByRole("CUSTOMER");
+        model.addAttribute("customers", customers);
+        return "employee/customers";
+    }
 
     @GetMapping("/employees")
     public String showEmployeeList(Model model) {
@@ -109,10 +115,10 @@ public String showFilteredUsers(@RequestParam(name = "roleFilter", required = fa
     public String showUserOrders(@PathVariable Long id, Model model) {
         List<Order> userOrders = orderService.findOrdersByUserId(id);
 
-        userOrders.forEach(order -> {
-            Double totalPrice = orderService.calculateTotalPriceByOrderId(order.getOrderId());
-            order.setTotalPrice(totalPrice != null ? totalPrice : 0.0);
-        });
+//        userOrders.forEach(order -> {
+//            Double totalPrice = orderService.calculateTotalPriceByOrderId(order.getOrderId());
+//            order.setTotalPrice(totalPrice != null ? totalPrice : 0.0);
+//        });
 
         model.addAttribute("userOrders", userOrders);
         return "admin/order/userOrders";
@@ -198,6 +204,19 @@ public List<Order> showOrders(){
         userService.updateUserOfAge(id, updateOfAgeUser);
         return "redirect:/users";
     }
+    @GetMapping("customer/ofAgeUser/{id}")
+    public String ofAgeCustomerForm(@PathVariable Long id, Model model){
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "employee/ofAgeUser";
+    }
+
+    @PostMapping("/customer/ofAgeUser/{id}")
+    public String ofAgeCustomer(@PathVariable Long id, @ModelAttribute User updateOfAgeUser){
+        userService.updateUserOfAge(id, updateOfAgeUser);
+        return "redirect:/users/employee/customers";
+    }
+
 
 }
 

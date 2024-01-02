@@ -157,10 +157,10 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title product-name" th:text="${restaurant.name}"></h5>
-            <p class="card-text product-description" th:text="${restaurant.address}"></p>
-            <p class="card-text product-description" th:text="${restaurant.email}"></p>
-            <p class="card-text product-description" th:text="${restaurant.phone}"></p>
-            <p class="card-text product-description" th:text="${restaurant.tableCount}"></p>
+            <p class="card-text product-description" th:text="'Address: ' + ${restaurant.address}"></p>
+            <p class="card-text product-description" th:text="'Email: ' + ${restaurant.email}"></p>
+            <p class="card-text product-description" th:text="'Phone Number: ' + ${restaurant.phone}"></p>
+            <p class="card-text product-description" th:text="'Number of tables: ' + ${restaurant.tableCount}"></p>
         </div>
         <div class="add-to-cart-btn">
             <a th:href="@{/order/choose-restaurant/{id}/choose-table(id=${restaurant.id}, paymentMethodId=${paymentMethodId})}" class="btn btn-primary">Choose Restaurant</a>

@@ -94,7 +94,9 @@
         </div>
     </div>
     <div class="add-to-cart-btn">
-        <a th:href="@{'/order/choose-restaurant?paymentMethodId=' + ${paymentMethod.id}}" class="btn btn-primary">Choose this method</a>
+<!--        <a th:href="@{'/order/choose-restaurant?paymentMethodId=' + ${paymentMethod.id}}" class="btn btn-primary">Choose this method</a>-->
+        <a th:href="@{'/order/summary?paymentMethodId=' + ${paymentMethod.id}}" class="btn btn-primary">Choose this method</a>
+
     </div>
 </div>
 
