@@ -7,11 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CartItem {
-
     private Product product;
     private int counter;
     private double price;
-
     public CartItem(Product product) {
         this.product = product;
         this.counter = 1;

@@ -9,10 +9,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
 import java.util.Map;
-
 @Configuration
 public class PaypalConfig {
-
     @Value("${paypal.client.id}")
     private String clientId;
     @Value("${paypal.client.secret}")
@@ -26,17 +24,14 @@ public class PaypalConfig {
         configMap.put("mode", mode);
         return configMap;
     }
-
     @Bean
     public OAuthTokenCredential oAuthTokenCredential() {
         return new OAuthTokenCredential(clientId, clientSecret, paypalSdkConfig());
     }
-
     @Bean
     public APIContext apiContext() throws PayPalRESTException {
         APIContext context = new APIContext(oAuthTokenCredential().getAccessToken());
         context.setConfigurationMap(paypalSdkConfig());
         return context;
     }
-
 }

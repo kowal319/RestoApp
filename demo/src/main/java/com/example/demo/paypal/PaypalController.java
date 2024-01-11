@@ -24,7 +24,7 @@ public class PaypalController {
     private Cart cart;
 
     public static final String SUCCESS_URL = "pay/success";
-    public static final String CANCEL_URL = "pay/cancel";
+    public static final String CANCEL_URL = "pay/paymentCanceled";
 
     @GetMapping("/paymentConfirmation")
     public String home() {
@@ -53,7 +53,7 @@ public class PaypalController {
 
     @GetMapping(value = CANCEL_URL)
     public String cancelPay() {
-        return "cancel";
+        return "paymentCanceled";
     }
 
     @GetMapping(value = SUCCESS_URL)

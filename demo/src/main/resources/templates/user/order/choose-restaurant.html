@@ -163,7 +163,8 @@
             <p class="card-text product-description" th:text="'Number of tables: ' + ${restaurant.tableCount}"></p>
         </div>
         <div class="add-to-cart-btn">
-            <a th:href="@{/order/choose-restaurant/{id}/choose-table(id=${restaurant.id}, paymentMethodId=${paymentMethodId})}" class="btn btn-primary">Choose Restaurant</a>
+            <a th:href="@{/order/choose-restaurant/{id}/choose-table(id=${restaurant.id})}"
+               class="btn btn-primary">Choose Restaurant</a>
         </div>
     </div>
 </div>

@@ -113,12 +113,9 @@ public class RestaurantServiceImpl implements RestaurantService {
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restaurantId);
         if (optionalRestaurant.isPresent()) {
             int tablesNum = optionalRestaurant.get().getTableCount();
-
-            System.out.println("Fetching available tables for restaurantId: " + restaurantId);
-            System.out.println("Available tables: " + tablesNum);
             return generateTableNumbers(tablesNum);
         }
-        return Collections.emptyList(); // Handle the case when the restaurant is not found
+        return Collections.emptyList();
     }
 
     }

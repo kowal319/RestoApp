@@ -26,6 +26,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
+
     private final CartService cartService;
 
     private final UserService userService;
@@ -59,7 +60,6 @@ public class OrderController {
 
     @GetMapping("/cart")
     public String showCart(){
-
     return "user/order/cartView";
     }
 
@@ -301,8 +301,22 @@ public String showChooseRestaurantForm(
     model.addAttribute("restaurants", restaurants);
     return "user/order/choose-restaurant";
 }
+
+@PostMapping("/choose-restaurant/{id}")
+public String processRestaurantSelection(@RequestParam("restaurantId") Long restaurantId,
+                                         Model model) {
+    List<Integer> availableTables = restaurantService.tablesList(restaurantId);
+
+    Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
+    model.addAttribute("selectedRestaurant", selectedRestaurant);
+
+    model.addAttribute("restaurantId", restaurantId);
+    model.addAttribute("availableTables", availableTables);
+    return "user/order/choose-restaurant/" + restaurantId + "/choose-table";
+}
+
 //
-//    @PostMapping("/choose-restaurant/{id}")
+    //    @PostMapping("/choose-restaurant/{id}")
 //    public String processRestaurantSelection(@RequestParam("restaurantId") Long restaurantId,
 //                                             @RequestParam("paymentMethodId") Long paymentMethodId,
 //                                             Model model,
@@ -321,18 +335,6 @@ public String showChooseRestaurantForm(
 //        // Redirect to a page where the user can choose a table
 //        return "user/order/choose-restaurant/" + restaurantId + "/choose-table";
 //    }
-@PostMapping("/choose-restaurant/{id}")
-public String processRestaurantSelection(@RequestParam("restaurantId") Long restaurantId,
-                                         Model model) {
-    List<Integer> availableTables = restaurantService.tablesList(restaurantId);
-
-    Restaurant selectedRestaurant = restaurantService.findById(restaurantId);
-    model.addAttribute("selectedRestaurant", selectedRestaurant);
-
-    model.addAttribute("restaurantId", restaurantId);
-    model.addAttribute("availableTables", availableTables);
-    return "user/order/choose-restaurant/" + restaurantId + "/choose-table";
-}
 //    @GetMapping("/choose-restaurant/{id}/choose-table")
 //    public String showChooseTableForm(
 //                                      @PathVariable Long id, Model model, HttpSession session) {
@@ -356,9 +358,12 @@ public String processRestaurantSelection(@RequestParam("restaurantId") Long rest
 public String showChooseTableForm(
         @PathVariable Long id, Model model, HttpSession session) {
     Restaurant restaurant = restaurantService.findById(id);
+    String selectedRestaurantName = restaurant.getName();
     model.addAttribute("restaurant", restaurant);
     List<Integer> availableTables = restaurantService.tablesList(id);
     model.addAttribute("availableTables", availableTables);
+
+    model.addAttribute("selectedRestaurantName", selectedRestaurantName);
     return "user/order/choose-table";
 }
 
@@ -370,6 +375,7 @@ public String showChooseTableForm(
                                        ) {
         session.setAttribute("restaurantId", restaurantId);
          session.setAttribute("selectedTable", selectedTable);
+
         return "redirect:/products";
     }
 

@@ -36,7 +36,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void decreaseItem(Long productId) {
         Product product = productService.findById(productId);
-        cart.descreaseProduct(product);
+        cart.decreaseProduct(product);
     }
 
     @Override

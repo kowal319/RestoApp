@@ -72,6 +72,8 @@
 <div class="main-content">
     <div class="card">
         <div class="card-body">
+            <a th:href="@{/paymentMethod}" class="go-back-btn">&lt; Go Back to Payment Method</a>
+
             <p>Selected Restaurant: <span th:text="${selectedRestaurantName}"></span></p>
             <p>Selected Table <span th:text="${selectedTable}"></span></p>
             <p>Selected Payment Method: <span th:text="${selectedPaymentMethodName}"></span></p>

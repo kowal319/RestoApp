@@ -16,25 +16,17 @@ import java.util.List;
 
 @Service
 public class PaypalService {
-
     private final APIContext apiContext;
     private final OrderRepository orderRepository;
-
 
     @Autowired
     public PaypalService(APIContext apiContext, OrderRepository orderRepository) {
         this.apiContext = apiContext;
         this.orderRepository = orderRepository;
     }
-
-
     public Payment createPayment(
             Double total,
-            String currency,
-            String method,
-            String intent,
-            String description,
-            String cancelUrl,
+            String currency,  String method, String intent, String description, String cancelUrl,
             String successUrl) throws PayPalRESTException{
 
         Amount amount = new Amount();
@@ -42,7 +34,6 @@ public class PaypalService {
         BigDecimal totalAmount = BigDecimal.valueOf(total);
         totalAmount = totalAmount.setScale(2, RoundingMode.HALF_UP);
         amount.setTotal(totalAmount.toString());
-
 
         Transaction transaction = new Transaction();
         transaction.setDescription(description);
